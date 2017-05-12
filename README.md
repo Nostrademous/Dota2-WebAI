@@ -28,7 +28,7 @@ manual issue commands (or toggle toggles) to get the bots to take certain action
 As an example, I might have a button that you can press on the GUI that will 
 instruct the bots to go to Roshan.
 
-###Where is the AI?
+### Where is the AI?
 It won't exist for now until all the plumbing is complete; meaning, until I 
 have basic bot play-ability and hard-coded logic working as orchestrated by 
 the web-based back-end framework. Once that is complete I can start leveraging 
@@ -45,7 +45,7 @@ servers to the main server so that it can learn "at scale". This is because no
 single instance will most likely have enough test data (aka games played) to 
 really train on and analyze.
 
-###What about your Dota2-FullOverwrite Project?
+### What about your Dota2-FullOverwrite Project?
 It is not going away currently, but ultimately it will become this new project. 
 I plan to leverage a lot of the code from that project into this one. There was a 
 reason I did a "full overwrite" and that is to allow for this project to eventually 
@@ -59,7 +59,7 @@ dream of Dota 2 AI. It could have been C/C++/Java, but honestly, it essentially
 will be anyways. I say this because most/many Python AI libraries leverage numpy 
 or pandas which is all C++ code under-the-hood anyways.
 
-###Can I Contribute?
+### Can I Contribute?
 Sure. As with my other project, you are welcome to help. All I ask is that you drop 
 me a note saying what you are doing and when you expect to be done (and if you 
 happen to decide you don't have time, that's fine too, just let me know). If you 
