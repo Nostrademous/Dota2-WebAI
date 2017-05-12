@@ -8,5 +8,5 @@ know how to execute those instructions inside the Dota 2 world through the
 exposed Bot-Scripting API.
 
 ### How to run
-Run the *local_server.py* file provided (Python 2.7+)
+Run the *main.py* file provided (Python 2.7+)
 [Then follow these directions](https://github.com/Nostrademous/Dota2-FullOverwrite/wiki/Workflow-for-Debugging-Bots)

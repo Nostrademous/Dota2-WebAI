@@ -1,5 +1,8 @@
 import cherrypy
 import json
+import world
+
+myWorld = world.World()
 
 @cherrypy.expose
 @cherrypy.tools.json_out()
@@ -13,7 +16,7 @@ class Root:
     @cherrypy.tools.accept(media='application/json')
     def POST(self):
         input_json = cherrypy.request.json
-        processData(input_json)
+        myWorld.update(input_json)
         return {"operation": "POST", "result": "success"}
     
     @cherrypy.expose
@@ -21,7 +24,7 @@ class Root:
         print 'shutting down'
         cherrypy.engine.exit()
 
-def web_server():
+def start():
     conf = {
         'global' : {
             'server.socket_host' : '127.0.0.1',
@@ -35,13 +38,7 @@ def web_server():
     }
     cherrypy.quickstart(Root(), '/', conf)
 
-def processData(data):
-    print '\nEnemies:\n\t', data['enemyHeroes']
-    print 'Allies:\n\t', data['alliedHeroes']
-    print 'Other Enemy Units:\n\t', data['enemyHeroesOther']
-    print 'Other Allied Units:\n\t', data['alliedHeroesOther']
-
 if __name__ == "__main__":
     print 'starting web server'
-    web_server()
+    start()
     print 'done'
