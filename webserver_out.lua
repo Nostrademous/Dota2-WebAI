@@ -87,7 +87,7 @@ local function dumpEnemyHeroesOther()
 end
 
 function webserver.SendData()
-    if GameTime() - webserver.lastUpdate > 1.0 then
+    if GameTime() - webserver.lastUpdate > 0.1 then
             
         webserver.lastUpdate = GameTime()
         
@@ -97,7 +97,8 @@ function webserver.SendData()
         json = json..", "..dumpEnemyHeroes()
         json = json..", "..dumpAlliedHeroesOther()
         json = json..", "..dumpEnemyHeroesOther()
-                
+        
+        json = json..', "updateTime": ' .. webserver.lastUpdate
         json = json..'}'
         
         --print(tostring(json))

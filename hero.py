@@ -1,4 +1,4 @@
-class Hero():
+class Hero(object):
     def __init__(self, fields):
         self.name   = fields[0]
         self.id     = fields[1]

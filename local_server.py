@@ -1,3 +1,5 @@
+from __future__ import print_function
+
 import cherrypy
 import json
 import world
@@ -7,7 +9,7 @@ myWorld = world.World()
 @cherrypy.expose
 @cherrypy.tools.json_out()
 @cherrypy.tools.json_in()
-class Root:
+class Root(object):
 
     @cherrypy.tools.accept(media='application/json')
     def GET(self):
@@ -21,7 +23,7 @@ class Root:
     
     @cherrypy.expose
     def shutdown(self):
-        print 'shutting down'
+        print('shutting down')
         cherrypy.engine.exit()
 
 def start():
@@ -39,6 +41,6 @@ def start():
     cherrypy.quickstart(Root(), '/', conf)
 
 if __name__ == "__main__":
-    print 'starting web server'
+    print('starting web server')
     start()
-    print 'done'
+    print('done')
