@@ -70,5 +70,5 @@ about AI. I tend to be very active about things I like doing so I am typically
 around to answer questions, discuss strategy, or just even chat about life.
 
 ### How to run
-Run the *main.py* file provided (Python 2.7+)
+Run the *main.py* file provided (code is Python 2.5+ and 3.0+ compatible)
 [Then follow these directions](https://github.com/Nostrademous/Dota2-FullOverwrite/wiki/Workflow-for-Debugging-Bots)
