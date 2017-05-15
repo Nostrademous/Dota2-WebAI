@@ -56,6 +56,38 @@ local function dumpAlliedHeroesOther()
     return str
 end
 
+local function dumpAlliedCreep()
+    local str = ''
+    count = 1
+    str = str..'"alliedCreep":{'
+    local alliedCreep = GetUnitList(UNIT_LIST_ALLIED_CREEPS)
+    for _, value in pairs(alliedCreep) do
+        if count > 1 then str = str..', ' end
+
+        str = str .. dumpUnitInfo( value )
+
+        count = count + 1
+    end
+    str = str..'}'
+    return str
+end
+
+local function dumpNeutralCreep()
+    local str = ''
+    count = 1
+    str = str..'"neutralCreep":{'
+    local neutralCreep = GetUnitList(UNIT_LIST_NEUTRAL_CREEPS)
+    for _, value in pairs(neutralCreep) do
+        if count > 1 then str = str..', ' end
+
+        str = str .. dumpUnitInfo( value )
+
+        count = count + 1
+    end
+    str = str..'}'
+    return str
+end
+
 local function dumpEnemyHeroes()
     local str = ''
     count = 1
@@ -86,6 +118,22 @@ local function dumpEnemyHeroesOther()
     return str
 end
 
+local function dumpEnemyCreep()
+    local str = ''
+    count = 1
+    str = str..'"enemyCreep":{'
+    local enemyCreep = GetUnitList(UNIT_LIST_ENEMY_CREEPS)
+    for _, value in pairs(enemyCreep) do
+        if count > 1 then str = str..', ' end
+
+        str = str .. dumpUnitInfo( value )
+
+        count = count + 1
+    end
+    str = str..'}'
+    return str
+end
+
 function webserver.SendData()
     if GameTime() - webserver.lastUpdate > 0.1 then
             
@@ -97,6 +145,9 @@ function webserver.SendData()
         json = json..", "..dumpEnemyHeroes()
         json = json..", "..dumpAlliedHeroesOther()
         json = json..", "..dumpEnemyHeroesOther()
+        json = json..", "..dumpAlliedCreep()
+        json = json..", "..dumpNeutralCreep()
+        json = json..", "..dumpEnemyCreep()
         
         json = json..', "updateTime": ' .. webserver.lastUpdate
         json = json..'}'
