@@ -5,21 +5,28 @@ from hero import Hero
 import json
 import constants as const
 
-epoch = datetime.datetime.utcfromtimestamp(0)
+startTime = datetime.datetime.now()
 
 enemies = {}
 allies  = {}
 
-def unix_time_millis(dt):
-    return (dt - epoch).total_seconds() * 1000.0
+def timeSinceStart(dt):
+    return (dt - startTime).total_seconds()
 
 class World(object):
     def __init__(self):
-        self.lastUpdate = unix_time_millis(datetime.datetime.now())
+        self.lastUpdate = timeSinceStart(datetime.datetime.now())
 
     def __repr__(self):
         return 'Last Update TimeStamp: %ull' % (self.lastUpdate)
 
+    def decision(self):
+        retJSON = {}
+        
+        retJSON["Timestamp"] = timeSinceStart(datetime.datetime.now())
+        
+        return retJSON
+    
     def update(self, data):
         print('\nUpdate Time: ', data['updateTime'])
 

@@ -17,16 +17,19 @@ end
 
 function X.myPrint(...)
     local args = {...}
-    local botname = GetUnitName( GetBot() )
-    local msg = tostring(Round(GameTime(), 5)).." [" .. botname .. "]: "
-    for i,v in ipairs(args) do
-        msg = msg .. tostring(v)
-    end
     
-    --uncomment to only see messages by bots mentioned underneath
-    --if botname == "invoker" then --or botname == "viper" then
-        print(msg)
-    --end
+    if #args > 0 then
+        local botname = GetUnitName( GetBot() )
+        local msg = tostring(Round(GameTime(), 5)).." [" .. botname .. "]: "
+        for i,v in ipairs(args) do
+            msg = msg .. tostring(v)
+        end
+        
+        --uncomment to only see messages by bots mentioned underneath
+        --if botname == "invoker" then --or botname == "viper" then
+            print(msg)
+        --end
+    end
 end
 
 function X.pause(...)

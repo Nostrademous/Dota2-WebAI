@@ -3,6 +3,8 @@
 --- GITHUB REPO: https://github.com/Nostrademous/Dota2-WebAI
 -------------------------------------------------------------------------------
 
+local dbg = require( GetScriptDirectory().."/debug" )
+
 local webserver = {}
 
 webserver.lastUpdate  = -1000.0
@@ -222,23 +224,23 @@ function webserver.SendData()
         json = json..", "..dumpGetIncomingTeleports()
         
         webserver.lastUpdate = GameTime()
+        --dbg.myPrint("LastUpdate - ", webserver.lastUpdate)
         
         json = json..', "updateTime": ' .. webserver.lastUpdate
         json = json..'}'
         
-        --print(tostring(json))
+        --dbg.myPrint(tostring(json))
         
         local req = CreateHTTPRequest( ":2222" )
         req:SetHTTPRequestRawPostBody("application/json", json)
         req:Send( function( result )
-            --print( "\nPOST response:" )
             for k,v in pairs( result ) do
                 if k == "Body" then
                     webserver.lastReply = v
+                    --print( webserver.lastReply )
+                    break
                 end
-                --print( webserver.lastReply )
             end
-            --print( "Done\n" )
         end )
     end
 end

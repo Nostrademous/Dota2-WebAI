@@ -79,6 +79,8 @@ end
 -- BASE THINK - DO NOT OVER-LOAD
 -------------------------------------------------------------------------------
 
+local lastReply = nil
+
 function X:Think(bot)
     -- if we are a human player, don't bother
     if not bot:IsBot() then return end
@@ -93,7 +95,12 @@ function X:Think(bot)
     server.SendData()
 
     local reply = server.GetLastReply()
-    dbg.myPrint( reply )
+    if reply == nil or reply == "" then
+        dbg.myPrint( "No reply from webserver - is it running???" )
+    elseif lastReply ~= reply then
+        dbg.myPrint( reply )
+        lastReply = reply
+    end
 end
 
 return X

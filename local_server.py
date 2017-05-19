@@ -19,7 +19,7 @@ class Root(object):
     def POST(self):
         input_json = cherrypy.request.json
         myWorld.update(input_json)
-        return {"operation": "POST", "result": "success"}
+        return myWorld.decision()
     
     @cherrypy.expose
     def shutdown(self):
