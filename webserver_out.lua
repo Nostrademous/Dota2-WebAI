@@ -3,6 +3,8 @@
 --- GITHUB REPO: https://github.com/Nostrademous/Dota2-WebAI
 -------------------------------------------------------------------------------
 
+dkjson = require( "game/dkjson" )
+
 local dbg = require( GetScriptDirectory().."/debug" )
 
 local webserver = {}
@@ -236,8 +238,13 @@ function webserver.SendData()
         req:Send( function( result )
             for k,v in pairs( result ) do
                 if k == "Body" then
-                    webserver.lastReply = v
-                    --print( webserver.lastReply )
+                    local obj, pos, err = dkjson.decode(v, 1, nil)
+                    if err then
+                        dbg.myPrint("JSON Decode Error: ", err)
+                    else
+                        webserver.lastReply = obj
+                        --print( webserver.lastReply )
+                    end
                     break
                 end
             end

@@ -98,7 +98,7 @@ function X:Think(bot)
     if reply == nil or reply == "" then
         dbg.myPrint( "No reply from webserver - is it running???" )
     elseif lastReply ~= reply then
-        dbg.myPrint( reply )
+        dbg.myPrint( reply.Timestamp )
         lastReply = reply
     end
 end
