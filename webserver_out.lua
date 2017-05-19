@@ -72,6 +72,22 @@ local function dumpAlliedCreep()
     return str
 end
 
+local function dumpAlliedWards()
+    local str = ''
+    count = 1
+    str = str..'"alliedWards":{'
+    local alliedWards = GetUnitList(UNIT_LIST_ALLIED_WARDS)
+    for _, value in pairs(alliedWards) do
+        if count > 1 then str = str..', ' end
+
+        str = str .. dumpUnitInfo( value )
+
+        count = count + 1
+    end
+    str = str..'}'
+    return str
+end
+
 local function dumpNeutralCreep()
     local str = ''
     count = 1
@@ -134,6 +150,26 @@ local function dumpEnemyCreep()
     return str
 end
 
+local function dumpEnemyWards()
+    local str = ''
+    count = 1
+    str = str..'"enemyWards":{'
+    local enemyWards = GetUnitList(UNIT_LIST_ENEMY_WARDS)
+    for _, value in pairs(enemyWards) do
+        if count > 1 then str = str..', ' end
+
+        str = str .. dumpUnitInfo( value )
+
+        count = count + 1
+    end
+    str = str..'}'
+    return str
+end
+
+local function reportEnemyCastInfo()
+    InstallCastCallback()
+end
+
 function webserver.SendData()
     if GameTime() - webserver.lastUpdate > 0.1 then
             
@@ -148,6 +184,8 @@ function webserver.SendData()
         json = json..", "..dumpAlliedCreep()
         json = json..", "..dumpNeutralCreep()
         json = json..", "..dumpEnemyCreep()
+        json = json..", "..dumpAlliedWards()
+        json = json..", "..dumpEnemyWards()
         
         json = json..', "updateTime": ' .. webserver.lastUpdate
         json = json..'}'
