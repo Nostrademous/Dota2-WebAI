@@ -22,6 +22,12 @@ local function dumpUnitInfo( hUnit )
     str = str .. ', "Loc_Y": ' .. loc.y
     str = str .. ', "Loc_Z": ' .. loc.z
     
+    str = str .. ', "Team": ' .. hUnit:GetTeam()
+    
+    if hUnit:IsHero() then
+        str = str .. ', "ID": ' .. hUnit:GetPlayerID()
+    end
+    
     str = str .. '}'
     return str
 end
@@ -166,15 +172,42 @@ local function dumpEnemyWards()
     return str
 end
 
+local function dumpTeleportInfo( hTable )
+    local str = '"' .. hTable.playerid .. '":{'
+
+    str = str .. '"TimeRemaining": ' .. hTable.time_remaining
+    
+    local loc = hTable.location
+    str = str .. ', "Loc_X": ' .. loc.x
+    str = str .. ', "Loc_Y": ' .. loc.y
+    str = str .. ', "Loc_Z": ' .. loc.z
+    
+    str = str .. '}'
+    return str
+end
+
+local function dumpGetIncomingTeleports()
+    local str = ''
+    count = 1
+    str = str..'"incomingTeleports":{'
+    local teleports = GetIncomingTeleports()
+    for _, value in pairs(teleports) do
+        if count > 1 then str = str..', ' end
+
+        str = str .. dumpTeleportInfo( value )
+
+        count = count + 1
+    end
+    str = str..'}'
+    return str
+end
+
 local function reportEnemyCastInfo()
-    InstallCastCallback()
+    --InstallCastCallback()
 end
 
 function webserver.SendData()
-    if GameTime() - webserver.lastUpdate > 0.1 then
-            
-        webserver.lastUpdate = GameTime()
-        
+    if (GameTime() - webserver.lastUpdate) > 0.25 then
         local json = '{'
                 
         json = json..dumpAlliedHeroes()
@@ -186,6 +219,9 @@ function webserver.SendData()
         json = json..", "..dumpEnemyCreep()
         json = json..", "..dumpAlliedWards()
         json = json..", "..dumpEnemyWards()
+        json = json..", "..dumpGetIncomingTeleports()
+        
+        webserver.lastUpdate = GameTime()
         
         json = json..', "updateTime": ' .. webserver.lastUpdate
         json = json..'}'
