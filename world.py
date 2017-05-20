@@ -22,9 +22,7 @@ class World(object):
 
     def decision(self):
         retJSON = {}
-        
         retJSON["Timestamp"] = timeSinceStart(datetime.datetime.now())
-        
         return retJSON
     
     def update(self, data):
@@ -43,6 +41,8 @@ class World(object):
         self.updateEnemyWards(data['enemyWards'])
         self.updateAlliedWards(data['alliedWards'])
         
+        self.updateAOEs(data['dangerousAOEs'])
+        self.updateProjectiles(data['dangerousProjectiles'])
         self.updateIncomingTeleports(data['incomingTeleports'])
 
     def updateEnemyHeroes(self, heroData):
@@ -84,9 +84,23 @@ class World(object):
     
     def updateEnemyWards(self, data):
         print('Enemy Wards:\n')
+        for ward in data:
+            print(ward)
         
     def updateAlliedWards(self, data):
         print('Allied Wards:\n')
+        for ward in data:
+            print(ward)
+    
+    def updateAOEs(self, data):
+        print('Dangerous AOEs:\n')
+        for aoe in data:
+            print(aoe)
+        
+    def updateProjectiles(self, data):
+        print('Dangerous Projectiles:\n')
+        for projectile in data:
+            print(projectile)
     
     def updateIncomingTeleports(self, data):
         print('Incoming Teleports:\n')

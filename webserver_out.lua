@@ -176,6 +176,76 @@ local function dumpEnemyWards()
     return str
 end
 
+local function dumpAOEInfo ( hTable )
+    -- NOTE: an aoe will be table with { "location", "ability", "caster", "radius", "playerid" }.
+    local str = '"' .. hTable.playerid .. '":{'
+
+    str = str .. '"Ability": ' .. hTable.ability
+    str = str .. ', "Radius": ' .. hTable.radius
+    str = str .. ', "Caster": ' .. hTable.caster
+    
+    local loc = hTable.location
+    str = str .. ', "Loc_X": ' .. loc.x
+    str = str .. ', "Loc_Y": ' .. loc.y
+    str = str .. ', "Loc_Z": ' .. loc.z
+    
+    str = str .. '}'
+    return str
+end
+
+local function dumpDangerousAOEs()
+    local str = ''
+    count = 1
+    str = str..'"dangerousAOEs":{'
+    local badAOEs = GetAvoidanceZones()
+    for _, aoe in pairs(badAOEs) do
+        if aoe.caster:GetTeam() ~= GetTeam() or aoe.ability == "faceless_void_chronosphere" then
+            if count > 1 then str = str..', ' end
+
+            str = str .. dumpAOEInfo( aoe )
+
+            count = count + 1
+        end
+    end
+    str = str..'}'
+    return str
+end
+
+local function dumpProjectileInfo( hTable )
+    -- NOTE: a projectile will be a table with { "location", "ability", "velocity", "radius", "playerid" }
+    local str = '"' .. hTable.playerid .. '":{'
+
+    str = str .. '"Ability": ' .. hTable.ability
+    str = str .. ', "Radius": ' .. hTable.radius
+    str = str .. ', "Velocity": ' .. hTable.velocity
+    
+    local loc = hTable.location
+    str = str .. ', "Loc_X": ' .. loc.x
+    str = str .. ', "Loc_Y": ' .. loc.y
+    str = str .. ', "Loc_Z": ' .. loc.z
+    
+    str = str .. '}'
+    return str
+end
+
+local function dumpDangerousProjectiles()
+    local str = ''
+    count = 1
+    str = str..'"dangerousProjectiles":{'
+    local badProjectiles = GetLinearProjectiles()
+    for _, projectile in pairs(badProjectiles) do
+        if projectile.playerid == nil or GetTeamForPlayer(projectile.playerid) ~= GetTeam() then
+            if count > 1 then str = str..', ' end
+
+            str = str .. dumpProjectileInfo( projectile )
+
+            count = count + 1
+        end
+    end
+    str = str..'}'
+    return str
+end
+
 local function dumpTeleportInfo( hTable )
     local str = '"' .. hTable.playerid .. '":{'
 
@@ -211,7 +281,7 @@ local function reportEnemyCastInfo()
 end
 
 function webserver.SendData()
-    if (GameTime() - webserver.lastUpdate) > 0.25 then
+    if (GameTime() - webserver.lastUpdate) > 0.5 then
         local json = '{'
                 
         json = json..dumpAlliedHeroes()
@@ -223,6 +293,8 @@ function webserver.SendData()
         json = json..", "..dumpEnemyCreep()
         json = json..", "..dumpAlliedWards()
         json = json..", "..dumpEnemyWards()
+        json = json..", "..dumpDangerousAOEs()
+        json = json..", "..dumpDangerousProjectiles()
         json = json..", "..dumpGetIncomingTeleports()
         
         webserver.lastUpdate = GameTime()
