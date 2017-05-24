@@ -93,11 +93,9 @@ function X:Think(bot)
 
     server.SendData()
 
-    local reply = server.GetLastReply()
-    if reply == nil or reply == "" then
-        dbg.myPrint( "No reply from webserver - is it running???" )
-    elseif lastReply ~= reply then
-        dbg.myPrint( reply.Timestamp )
+    local reply = server.GetLastReply(bot:GetUnitName())
+    
+    if reply ~= nil and lastReply ~= reply then
         lastReply = reply
     end
 end

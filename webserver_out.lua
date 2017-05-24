@@ -276,8 +276,34 @@ local function dumpGetIncomingTeleports()
     return str
 end
 
-local function reportEnemyCastInfo()
-    --InstallCastCallback()
+local function dumpCastCallbackInfo( hTable )
+    local str = '"' .. hTable.playerid .. '":{'
+
+    str = str .. '"TimeRemaining": ' .. hTable.time_remaining
+    
+    local loc = hTable.location
+    str = str .. ', "Loc_X": ' .. loc.x
+    str = str .. ', "Loc_Y": ' .. loc.y
+    str = str .. ', "Loc_Z": ' .. loc.z
+    
+    str = str .. '}'
+    return str
+end
+
+local function dumpCastCallback()
+    local str = ''
+    count = 1
+    str = str..'"castCallback":{'
+    local callback = InstallCastCallback()
+    for _, value in pairs(callback) do
+        if count > 1 then str = str..', ' end
+
+        str = str .. dumpCastCallbackInfo( value )
+
+        count = count + 1
+    end
+    str = str..'}'
+    return str
 end
 
 function webserver.SendData()
@@ -324,8 +350,25 @@ function webserver.SendData()
     end
 end
 
-function webserver.GetLastReply()
-    return webserver.lastReply
+function webserver.GetLastReply( sHeroName )
+    if webserver.lastReply == nil then
+        dbg.myPrint( "No Server Reply - Is it Running???" )
+        return nil
+    end
+    
+    dbg.myPrint( webserver.lastReply.Timestamp )
+    
+    -- if we are not provided a hero name, return full last reply
+    if sHeroName == nil and webserver.lastReply then
+        return webserver.lastReply
+    end
+    
+    -- if we are provided a hero name, return reply for that hero
+    if webserver.lastReply[sHeroName] ~= nil then
+        return webserver.lastReply[sHeroName]
+    end
+    
+    return nil
 end
 
 return webserver
