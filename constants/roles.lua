@@ -1,0 +1,7 @@
+ROLE_CARRY      = 1
+ROLE_MID        = 2
+ROLE_OFFLANE    = 3
+ROLE_SEMISUP    = 4
+ROLE_FULLSUP    = 5
+ROLE_GANKER     = 6
+ROLE_JUNGLER    = 7

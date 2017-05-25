@@ -55,6 +55,12 @@ function X:ExecuteMode()
 end
 
 function X:BeginMode(mode, value)
+    if mode == nil then
+        self.currentMode = none
+        self.currentModeValue = BOT_MODE_DESIRE_NONE
+        return
+    end
+    
     if mode == self.currentMode then return end
     self.currentMode = mode
     self.currentModeValue = value
@@ -72,6 +78,10 @@ end
 
 function X:DoInit(bot)
     self.Init = true
+    bot.SelfRef = self
+    
+    local fullName = bot:GetUnitName()
+    self.Name = string.sub(fullName, 15, string.len(fullName))
 end
 
 -------------------------------------------------------------------------------
@@ -98,6 +108,18 @@ function X:Think(bot)
     if reply ~= nil and lastReply ~= reply then
         lastReply = reply
     end
+    
+    if lastReply == nil then
+        lastReply = {}
+        lastReply.Mode = none
+        lastReply.ModeValue = BOT_MODE_DESIRE_NONE
+    end
+    
+    self:BeginMode(lastReply.Mode, lastReply.ModeValue)
+    self:ExecuteMode()
+    
+    -- draw debug info to Game UI
+    dbg.draw()
 end
 
 return X

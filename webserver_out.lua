@@ -338,7 +338,8 @@ function webserver.SendData()
                 if k == "Body" then
                     local obj, pos, err = dkjson.decode(v, 1, nil)
                     if err then
-                        dbg.myPrint("JSON Decode Error: ", err)
+                        print("JSON Decode Error: ", err)
+                        webserver.lastReply = nil
                     else
                         webserver.lastReply = obj
                         --print( webserver.lastReply )
