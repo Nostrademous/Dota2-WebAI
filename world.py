@@ -44,6 +44,8 @@ class World(object):
         self.updateAOEs(data['dangerousAOEs'])
         self.updateProjectiles(data['dangerousProjectiles'])
         self.updateIncomingTeleports(data['incomingTeleports'])
+        
+        self.updateCastCallback(data['castCallback'])
 
     def updateEnemyHeroes(self, heroData):
         print('Enemies:\n')
@@ -106,3 +108,8 @@ class World(object):
         print('Incoming Teleports:\n')
         for tp in data:
             print(tp)
+            
+    def updateCastCallback(self, data):
+        print('Cast Callbacks:\n')
+        for call in data:
+            print(call)

@@ -290,24 +290,54 @@ local function dumpCastCallbackInfo( hTable )
     return str
 end
 
+local callbackInit = false
+local callbackStr = ""
+
+function callbackFunc( hTable )
+    local str = '"'
+    if callbackStr ~= "" then str = ', "' end
+
+    str = str .. hTable.player_id .. '":{'
+    if hTable.unit == nil then
+        str = str .. '"CastingUnit": UNKNOWN'
+    else
+        str = str .. '"CastingUnit": ' .. dumpUnitInfo( hTable.unit )
+    end
+    
+    if hTable.ability == nil then
+        str = str .. ', "Ability": UNKNOWN'
+    else
+        str = str .. ', "Ability": ' .. hTable.ability:GetName()
+    end
+    
+    local loc = hTable.location
+    str = str .. ', "Loc_X": ' .. loc.x
+    str = str .. ', "Loc_Y": ' .. loc.y
+    str = str .. ', "Loc_Z": ' .. loc.z
+    str = str .. '}'
+    
+    callbackStr = callbackStr .. str
+end
+
 local function dumpCastCallback()
     local str = ''
     count = 1
     str = str..'"castCallback":{'
-    local callback = InstallCastCallback()
-    for _, value in pairs(callback) do
-        if count > 1 then str = str..', ' end
-
-        str = str .. dumpCastCallbackInfo( value )
-
-        count = count + 1
-    end
+    str = str..callbackStr
     str = str..'}'
+    
+    callbackStr = ""
     return str
 end
 
 function webserver.SendData()
     if (GameTime() - webserver.lastUpdate) > 0.5 then
+    
+        if not callbackInit then
+            InstallCastCallback(-1, callbackFunc)
+            callbackInit = true
+        end
+    
         local json = '{'
                 
         json = json..dumpAlliedHeroes()
@@ -322,6 +352,7 @@ function webserver.SendData()
         json = json..", "..dumpDangerousAOEs()
         json = json..", "..dumpDangerousProjectiles()
         json = json..", "..dumpGetIncomingTeleports()
+        json = json..", "..dumpCastCallback()
         
         webserver.lastUpdate = GameTime()
         --dbg.myPrint("LastUpdate - ", webserver.lastUpdate)
