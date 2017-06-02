@@ -3,7 +3,7 @@
 --- GITHUB REPO: https://github.com/Nostrademous/Dota2-WebAI
 -------------------------------------------------------------------------------
 
-require( GetScriptDirectory().."/helpers/global_helper" )
+require( GetScriptDirectory().."/helper/global_helper" )
 
 dbg = require( GetScriptDirectory().."/debug" )
 
