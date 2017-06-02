@@ -9,6 +9,8 @@ local dbg = require( GetScriptDirectory().."/debug" )
 
 local webserver = {}
 
+local serverNotification = false
+
 webserver.lastUpdate  = -1000.0
 webserver.lastReply   = nil
 
@@ -331,7 +333,7 @@ local function dumpCastCallback()
 end
 
 function webserver.SendData()
-    if (GameTime() - webserver.lastUpdate) > 0.5 then
+    if not serverNotification and (GameTime() - webserver.lastUpdate) > 0.5 then
     
         if not callbackInit then
             InstallCastCallback(-1, callbackFunc)
@@ -384,7 +386,10 @@ end
 
 function webserver.GetLastReply( sHeroName )
     if webserver.lastReply == nil then
-        dbg.myPrint( "No Server Reply - Is it Running???" )
+        if not serverNotification then
+            dbg.pause( "No Server Reply - unpause to continue without server support; reload scripts after starting server to reconfigure" )
+            serverNotification = true
+        end
         return nil
     end
     

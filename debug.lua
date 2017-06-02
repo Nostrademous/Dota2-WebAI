@@ -19,7 +19,7 @@ function X.myPrint(...)
     local args = {...}
     
     if #args > 0 then
-        local botname = GetBot().SelfRef.Name
+        local botname = GetBot().mybot.Name
         local msg = tostring(Round(GameTime(), 5)).." [" .. botname .. "]: "
         for i,v in ipairs(args) do
             msg = msg .. tostring(v)

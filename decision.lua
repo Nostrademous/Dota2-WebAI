@@ -3,17 +3,19 @@
 --- GITHUB REPO: https://github.com/Nostrademous/Dota2-WebAI
 -------------------------------------------------------------------------------
 
-local dbg = require( GetScriptDirectory().."/debug" )
+dbg = require( GetScriptDirectory().."/debug" )
+
+local think = require( GetScriptDirectory().."/think" )
 
 local server = require( GetScriptDirectory().."/webserver_out" )
 
-none = dofile( GetScriptDirectory().."/modes/none" )
+noneMode = dofile( GetScriptDirectory().."/modes/none" )
 
 -------------------------------------------------------------------------------
 -- BASE CLASS - DO NOT MODIFY THIS SECTION
 -------------------------------------------------------------------------------
 
-local X = { init = false, currentMode = none, currentModeValue = BOT_MODE_DESIRE_NONE, prevMode = none  }
+local X = { init = false, currentMode = noneMode, currentModeValue = BOT_MODE_DESIRE_NONE, prevMode = noneMode  }
 
 function X:new(o)
     o = o or {}
@@ -56,7 +58,7 @@ end
 
 function X:BeginMode(mode, value)
     if mode == nil then
-        self.currentMode = none
+        self.currentMode = noneMode
         self.currentModeValue = BOT_MODE_DESIRE_NONE
         return
     end
@@ -67,7 +69,7 @@ function X:BeginMode(mode, value)
 end
 
 function X:ClearMode()
-    self.currentMode = none
+    self.currentMode = noneMode
     self.currentModeValue = BOT_MODE_DESIRE_NONE
     self:ExecuteMode()
 end
@@ -78,7 +80,8 @@ end
 
 function X:DoInit(bot)
     self.Init = true
-    bot.SelfRef = self
+    bot.mybot = self
+    self.lastModeThink = -1000.0
     
     local fullName = bot:GetUnitName()
     self.Name = string.sub(fullName, 15, string.len(fullName))
@@ -89,6 +92,21 @@ end
 -------------------------------------------------------------------------------
 
 local lastReply = nil
+local function ServerUpdate()
+    server.SendData()
+
+    local reply = server.GetLastReply(GetBot():GetUnitName())
+    
+    if reply == nil then
+        return nil, BOT_MODE_DESIRE_NONE
+    else
+        if lastReply ~= reply then
+            lastReply = reply
+        end
+    end
+
+    return lastReply.Mode, lastReply.ModeValue
+end
 
 function X:Think(bot)
     -- if we are a human player, don't bother
@@ -101,25 +119,25 @@ function X:Think(bot)
 
     if GetGameState() ~= GAME_STATE_GAME_IN_PROGRESS and GetGameState() ~= GAME_STATE_PRE_GAME then return end
 
-    server.SendData()
-
-    local reply = server.GetLastReply(bot:GetUnitName())
-    
-    if reply ~= nil and lastReply ~= reply then
-        lastReply = reply
-    end
-    
-    if lastReply == nil then
-        lastReply = {}
-        lastReply.Mode = none
-        lastReply.ModeValue = BOT_MODE_DESIRE_NONE
-    end
-    
-    self:BeginMode(lastReply.Mode, lastReply.ModeValue)
-    self:ExecuteMode()
-    
     -- draw debug info to Game UI
     dbg.draw()
+    
+    -- do out Thinking and set our Mode
+    if GameTime() - self.lastModeThink >= 0.1 then
+        -- try to get directives from the web-server
+        local highestDesiredMode, highestDesiredValue = ServerUpdate()
+        
+        -- if we got "nil" then do local thinking
+        if highestDesiredMode == nil then
+            highestDesiredMode, highestDesiredValue = think.MainThink()
+        end
+        
+        -- execute our current directives
+        self:BeginMode(highestDesiredMode, highestDesiredValue)
+        self:ExecuteMode()
+        
+        self.lastModeThink = GameTime()
+    end
 end
 
 return X
