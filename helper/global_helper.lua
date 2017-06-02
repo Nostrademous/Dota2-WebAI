@@ -1,3 +1,15 @@
+-------------------------------------------------------------------------------
+--- AUTHORS: iSarCasm, Nostrademous
+--- GITHUB REPO: https://github.com/Nostrademous/Dota2-WebAI
+-------------------------------------------------------------------------------
+
+globalInit = false
+
+function InitializeGlobalVars()
+    heroData = require( GetScriptDirectory().."/hero_data" )
+    globalInit = true
+end
+
 function GetShop()
     if (GetTeam() == TEAM_RADIANT) then
         return SHOP_RADIANT

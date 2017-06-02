@@ -3,6 +3,8 @@
 --- GITHUB REPO: https://github.com/Nostrademous/Dota2-WebAI
 -------------------------------------------------------------------------------
 
+require( GetScriptDirectory().."/helpers/global_helper" )
+
 dbg = require( GetScriptDirectory().."/debug" )
 
 local think = require( GetScriptDirectory().."/think" )
@@ -75,16 +77,36 @@ function X:ClearMode()
 end
 
 -------------------------------------------------------------------------------
--- BASE INITIALIZATION - DO NOT OVER-LOAD
+-- BASE INITIALIZATION & RESET FUNCTIONS - DO NOT OVER-LOAD
 -------------------------------------------------------------------------------
 
 function X:DoInit(bot)
+    if not globalInit then
+        InitializeGlobalVars()
+    end
+
     self.Init = true
     bot.mybot = self
+    
     self.lastModeThink = -1000.0
+    
+    self.moving_location = nil
+    self.ability_location = nil
+    self.ability_completed = -1000.0
     
     local fullName = bot:GetUnitName()
     self.Name = string.sub(fullName, 15, string.len(fullName))
+end
+
+function X:ResetTempVars()
+    self.moving_location = nil
+    
+    if self.ability_location ~= nil then
+        if GameTime() >= self.ability_completed then
+            self.ability_location = nil
+            self.ability_completed = -1000.0
+        end
+    end
 end
 
 -------------------------------------------------------------------------------
@@ -124,6 +146,9 @@ function X:Think(bot)
     
     -- do out Thinking and set our Mode
     if GameTime() - self.lastModeThink >= 0.1 then
+        -- reset any frame-temporary variables
+        self:ResetTempVars()
+        
         -- try to get directives from the web-server
         local highestDesiredMode, highestDesiredValue = ServerUpdate()
         

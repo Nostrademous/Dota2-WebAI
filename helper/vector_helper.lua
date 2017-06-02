@@ -1,4 +1,5 @@
 local VectorHelper = {}
+
 ---------------------------------------
 function VectorHelper:Normalize(vec)
     local x = vec[1]
@@ -10,5 +11,22 @@ end
 function VectorHelper:Length(vec)
   return (math.sqrt(math.pow(vec.x, 2) + math.pow(vec.y, 2)))
 end
+
+function VectorHelper:GetDistance(s, t)
+    return math.sqrt((s[1]-t[1])*(s[1]-t[1]) + (s[2]-t[2])*(s[2]-t[2]))
+end
+
+function VectorHelper:VectorTowards(start, towards, distance)
+    local facing = towards - start
+    local direction = facing / self:GetDistance(facing, Vector(0,0)) --normalized
+    return start + (direction * distance)
+end
+
+function VectorHelper:VectorAway(start, towards, distance)
+    local facing = start - towards
+    local direction = facing / self:GetDistance(facing, Vector(0,0)) --normalized
+    return start + (direction * distance)
+end
+
 ---------------------------------------
 return VectorHelper
