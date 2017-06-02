@@ -11,7 +11,7 @@ end
 function AntimageBlink:Desire()
     local bot = GetBot()
     
-    local ability = bot:GetAbilityByName(self.Name)
+    local ability = self:Ability()
     
     if not ability:IsFullyCastable() then
         return BOT_ACTION_DESIRE_NONE
@@ -39,7 +39,7 @@ end
 function AntimageBlink:Call()
     local bot = GetBot()
     
-    local ability = bot:GetAbilityByName(self.Name)
+    local ability = self:Ability()
     local max_blink_range = ability:GetSpecialValueInt("blink_range")
     local move_loc = bot.mybot.moving_location
     
