@@ -37,3 +37,7 @@ end
 function Hardlane()
     return ((GetTeam() == TEAM_RADIANT) and LANE_TOP or LANE_BOT)
 end
+
+function GetSeconds()
+    return math.floor(DotaTime()) % 60
+end
