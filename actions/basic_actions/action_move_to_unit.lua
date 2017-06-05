@@ -3,13 +3,15 @@ local MoveToUnit = {}
 MoveToUnit.Name = "Move to Unit"
 
 -------------------------------------------------
-function MoveToUnit:Call( hUnit )
-    if hUnit and not hUnit:IsNull() and hUnit:IsAlive() then
-        local bot = GetBot()
-        bot.mybot.moving_location = hUnit:GetLocation()
-        DebugDrawCircle(bot.mybot.moving_location, 25, 255, 255 ,255)
-        DebugDrawLine(bot:GetLocation(), bot.mybot.moving_location, 255, 255, 255)
-        bot:Action_MoveToUnit( hUnit )
+function MoveToUnit:Call( hUnit, hUnit2 )
+    if hUnit2 and not hUnit2:IsNull() and hUnit2:IsAlive() then
+        if hUnit:IsHero() then
+            hUnit.mybot.moving_location = hUnit2:GetLocation()
+        end
+        
+        DebugDrawCircle(hUnit2:GetLocation(), 25, 255, 255 ,255)
+        DebugDrawLine(hUnit:GetLocation(), hUnit2:GetLocation(), 255, 255, 255)
+        hUnit:Action_MoveToUnit( hUnit2 )
     end
 end
 -------------------------------------------------
