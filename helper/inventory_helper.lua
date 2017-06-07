@@ -1,3 +1,8 @@
+-------------------------------------------------------------------------------
+--- AUTHORS: iSarCasm, Nostrademous
+--- GITHUB REPO: https://github.com/Nostrademous/Dota2-WebAI
+-------------------------------------------------------------------------------
+
 local InventoryHelper = {}
 
 function InventoryHelper:Contains(unit, item, hasToBeActiveSlot)
@@ -98,6 +103,16 @@ end
 
 function InventoryHelper:Value(item)
     return GetItemCost(item)
+end
+
+function InventoryHelper:BuyItem( hUnit, sItemName )
+    local buyResult = hUnit:ActionImmediate_PurchaseItem(sItemName)
+    if buyResult ~= PURCHASE_ITEM_SUCCESS then
+        local sError = GetTableKeyNameFromID(tableItemPurchaseResults, buyResult)
+        if sError == nil then sError = buyResult end
+        
+        dbg.pause("[ITEM PURCHASE ERROR] Hero: ", hUnit:GetUnitName(), ", Item: ", sItemName, ", Result: ", sError)
+    end
 end
 
 function InventoryHelper:HealthConsumables( hHero )

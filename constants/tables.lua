@@ -1,3 +1,7 @@
+-------------------------------------------------------------------------------
+--- AUTHORS: Nostrademous
+--- GITHUB REPO: https://github.com/Nostrademous/Dota2-WebAI
+-------------------------------------------------------------------------------
 
 tableBotActions = {
     BOT_ACTION_TYPE_NONE            = 0,
