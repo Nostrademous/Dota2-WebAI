@@ -18,4 +18,8 @@ function UnitHelper:TimeToReachTarget( hUnit, hTarget, fSpeed )
     return VERY_HIGH_INT
 end
 
+function UnitHelper:isRanged( hUnit )
+    return ( hUnit:GetAttackRange() == 300 )
+end
+
 return UnitHelper

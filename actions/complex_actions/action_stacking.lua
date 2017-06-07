@@ -1,39 +1,43 @@
 local next = next  -- https://stackoverflow.com/a/1252776
 local VectorHelper = require(GetScriptDirectory().."/helper/vector_helper")
+local UnitHelper = require(GetScriptDirectory().."/helper/unit_helper")
+local Stacking = {}
 
-local StackCamp = {}
-
-StackCamp.Name = "Stack Camp"
+Stacking.Name = "Stacking"
 
 -------------------------------------------------
 
-function StackCamp:Call(camp_location, camp_timing, camp_wait_at, camp_pull_to)
+function Stacking:Call(camp_location, camp_timing, camp_wait_at, camp_pull_to)
     -- Returns 0 if it still has future stacking actions to accomplish
-    -- Returns 1 if it has not finished stacking, but will do so if action queue left alone
-
-
-    -- Making assumption that clear action-queue before tell it to stack
-    -- otherwise its hard to not keep giving it a moveLocation command every frame
+    -- Returns 1 if it has finished the stack
 
     --TODO check if need to update timings based on range/projectile speed/animation speed?
     local bot = GetBot()
     local current_action = bot:GetCurrentActionType()
+    dbg.myPrint("In Stacking. Current action: ", current_action)
 
-    if current_action == nil and GetSeconds() < camp_timing then  -- It's not time to pull/stack yet
+    -- treat both these options same as nil option from initial call of stack
+    if current_action == BOT_ACTION_TYPE_NONE or current_action == BOT_ACTION_TYPE_IDLE then
+        current_action = nil
+    end
+
+    -- action nil check necessary
+    -- as otherwise passing over the pull_to spot whilst moving to stack will inadvertently cancel it
+    if current_action == nil and VectorHelper:GetDistance(bot:GetLocation(), camp_pull_to) < 1 then
+        return 1
+    end
+
+
+    if GetSeconds() < camp_timing then  -- It's not time to pull/stack yet
         -- If we're already at the waiting spot, nothing to do
         if VectorHelper:GetDistance(bot:GetLocation(), camp_wait_at) > 1 then
-            -- I could use MoveToLocation:Call. but then its doing GetBot() twice. doesnt feel necessary.
-            -- these functions can actually be attached to the bot 'table'
-            -- i.e. function CDOTA_Bot_Script:pull_camp(camp, timing, should_chain, pull_num)
-            -- they are then simply called with bot:pull_camp(blah...)
             bot:Action_MoveToLocation(camp_wait_at)
         end
     else
         local attack_range = bot:GetAttackRange()
-        if current_action == nil and not isRanged(bot) then  -- again could attach isRanged to the bot table?
+        if current_action == nil and not UnitHelper:isRanged(bot) then  -- again could attach isRanged to the bot table?
             bot:Action_MoveToLocation(camp_location)
             bot:ActionQueue_MoveToLocation(camp_pull_to)
-            return 1
         else
             -- two options here
             -- 1) attack move. we track when projectile in air then move back
@@ -46,7 +50,6 @@ function StackCamp:Call(camp_location, camp_timing, camp_wait_at, camp_pull_to)
                 if first_neutral ~= nil then
                     bot:ActionAttackUnit(first_neutral, true)
                     bot:ActionQueue_MoveToLocation(camp_pull_to)
-                    return 1
                 end
             end
         end
@@ -54,5 +57,5 @@ function StackCamp:Call(camp_location, camp_timing, camp_wait_at, camp_pull_to)
     return 0
 end
 
-
+return Stacking
 -------------------------------------------------
