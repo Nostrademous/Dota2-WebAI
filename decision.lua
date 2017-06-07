@@ -3,6 +3,7 @@
 --- GITHUB REPO: https://github.com/Nostrademous/Dota2-WebAI
 -------------------------------------------------------------------------------
 
+require( GetScriptDirectory().."/constants/tables" )
 require( GetScriptDirectory().."/helper/global_helper" )
 
 dbg = require( GetScriptDirectory().."/debug" )
@@ -93,6 +94,9 @@ function X:DoInit(bot)
     self.moving_location = nil
     self.ability_location = nil
     self.ability_completed = -1000.0
+    self.attack_target = nil
+    self.attack_target_id = -1
+    self.attack_completed = -1000.0
     
     local fullName = bot:GetUnitName()
     self.Name = string.sub(fullName, 15, string.len(fullName))
@@ -105,6 +109,12 @@ function X:ResetTempVars()
         if GameTime() >= self.ability_completed then
             self.ability_location = nil
             self.ability_completed = -1000.0
+        end
+    end
+    
+    if self.attack_target ~= nil then
+        if GameTime() >= self.attack_completed then
+            self.attack_completed = -1000.0
         end
     end
 end
@@ -134,7 +144,7 @@ function X:Think(bot)
     -- if we are a human player, don't bother
     if not bot:IsBot() then return end
 
-    if GetGameState() == GAME_STATE_PRE_GAME and not self.Init then
+    if not self.Init then
         self:DoInit(bot)
         return
     end

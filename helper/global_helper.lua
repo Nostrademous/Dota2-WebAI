@@ -37,3 +37,17 @@ end
 function Hardlane()
     return ((GetTeam() == TEAM_RADIANT) and LANE_TOP or LANE_BOT)
 end
+
+function GetTableKeyNameFromID( hTable, iIndex )
+	if hTable == nil or iIndex == nil then
+		return "nil"
+	end
+
+	for key, value in pairs(hTable) do
+		if value == iIndex then
+			return tostring(key)
+		end
+	end
+	
+	return nil
+end
