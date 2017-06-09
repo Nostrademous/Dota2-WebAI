@@ -58,4 +58,4 @@ class ItemKB():
 
 if __name__ == "__main__":
     itemkb = ItemKB()
-    itemkb.getStartingItems("zeus")
+    print(itemkb.getStartingItems("clockwerk"))
