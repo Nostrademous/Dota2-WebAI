@@ -1,3 +1,8 @@
+-------------------------------------------------------------------------------
+--- AUTHORS: iSarCasm, Nostrademous
+--- GITHUB REPO: https://github.com/Nostrademous/Dota2-WebAI
+-------------------------------------------------------------------------------
+
 local UnitHelper = {}
 
 -- this can be used for unit reaching another unit or projectile reaching a unit
