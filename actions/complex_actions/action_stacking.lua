@@ -33,7 +33,8 @@ function Stacking:Call(bot, camp_location, camp_timing, camp_wait_at, camp_pull_
             bot:Action_MoveToLocation(camp_wait_at)
         end
     else
-        local attack_range = bot:GetAttackRange()
+        -- take minimum distance between Attack Range and Vision Range (at night we can attack farther than we can see)
+        local attack_range = math.min(bot:GetAttackRange(), bot:GetCurrentVisionRange())
         if current_action == nil and not UnitHelper:isRanged(bot) then  -- again could attach isRanged to the bot table?
             bot:Action_MoveToLocation(camp_location)
             bot:ActionQueue_MoveToLocation(camp_pull_to)
