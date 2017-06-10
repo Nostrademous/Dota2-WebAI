@@ -7,12 +7,11 @@ Stacking.Name = "Stacking"
 
 -------------------------------------------------
 
-function Stacking:Call(camp_location, camp_timing, camp_wait_at, camp_pull_to)
-    -- Returns 0 if it still has future stacking actions to accomplish
-    -- Returns 1 if it has finished the stack
+function Stacking:Call(bot, camp_location, camp_timing, camp_wait_at, camp_pull_to)
+    -- Returns false if it still has future stacking actions to accomplish
+    -- Returns true if it has finished the stack
 
     --TODO check if need to update timings based on range/projectile speed/animation speed?
-    local bot = GetBot()
     local current_action = bot:GetCurrentActionType()
     dbg.myPrint("In Stacking. Current action: ", current_action)
 
@@ -23,8 +22,8 @@ function Stacking:Call(camp_location, camp_timing, camp_wait_at, camp_pull_to)
 
     -- action nil check necessary
     -- as otherwise passing over the pull_to spot whilst moving to stack will inadvertently cancel it
-    if current_action == nil and VectorHelper:GetDistance(bot:GetLocation(), camp_pull_to) < 1 then
-        return 1
+    if current_action == nil and VectorHelper:GetDistance(bot:GetLocation(), camp_pull_to) < 200 then
+        return true
     end
 
 
@@ -54,7 +53,7 @@ function Stacking:Call(camp_location, camp_timing, camp_wait_at, camp_pull_to)
             end
         end
     end
-    return 0
+    return false
 end
 
 return Stacking
