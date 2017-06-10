@@ -47,7 +47,7 @@ function Stacking:Call(bot, camp_location, camp_timing, camp_wait_at, camp_pull_
             elseif current_action == BOT_ACTION_TYPE_MOVE then
                 local first_neutral = next(bot:GetNearbyNeutralCreeps(attack_range))
                 if first_neutral ~= nil then
-                    bot:ActionAttackUnit(first_neutral, true)
+                    bot:Action_AttackUnit(first_neutral, true)
                     bot:ActionQueue_MoveToLocation(camp_pull_to)
                 end
             end
