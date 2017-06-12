@@ -32,6 +32,19 @@ local function dumpUnitInfo( hUnit )
     
     if hUnit:IsHero() then
         str = str .. ', "ID": ' .. hUnit:GetPlayerID()
+        
+        str = str .. ', "Items": {'
+        
+        local count = 1
+        for iInvIndex = 0, 15, 1 do
+            if count > 1 then str = str .. ', ' end
+            local hItem = GetItemInSlot(iInvIndex)
+            if hItem ~= nil then
+                str = str .. hItem:GetName()
+                count = count + 1
+            end
+        end
+        str = str .. '}'
     end
     
     str = str .. '}'
@@ -40,7 +53,7 @@ end
 
 local function dumpAlliedHeroes()
     local str = ''
-    count = 1
+    local count = 1
     str = str..'"alliedHeroes":{'
     local alliedHeroes = GetUnitList(UNIT_LIST_ALLIED_HEROES)
     for _, value in pairs(alliedHeroes) do
@@ -56,7 +69,7 @@ end
 
 local function dumpAlliedHeroesOther()
     local str = ''
-    count = 1
+    local count = 1
     str = str..'"alliedHeroesOther":{'
     local alliedHeroesOther = GetUnitList(UNIT_LIST_ALLIED_OTHER)
     for _, value in pairs(alliedHeroesOther) do
@@ -70,7 +83,7 @@ end
 
 local function dumpAlliedCreep()
     local str = ''
-    count = 1
+    local count = 1
     str = str..'"alliedCreep":{'
     local alliedCreep = GetUnitList(UNIT_LIST_ALLIED_CREEPS)
     for _, value in pairs(alliedCreep) do
@@ -86,7 +99,7 @@ end
 
 local function dumpAlliedWards()
     local str = ''
-    count = 1
+    local count = 1
     str = str..'"alliedWards":{'
     local alliedWards = GetUnitList(UNIT_LIST_ALLIED_WARDS)
     for _, value in pairs(alliedWards) do
@@ -102,7 +115,7 @@ end
 
 local function dumpNeutralCreep()
     local str = ''
-    count = 1
+    local count = 1
     str = str..'"neutralCreep":{'
     local neutralCreep = GetUnitList(UNIT_LIST_NEUTRAL_CREEPS)
     for _, value in pairs(neutralCreep) do
@@ -118,7 +131,7 @@ end
 
 local function dumpEnemyHeroes()
     local str = ''
-    count = 1
+    local count = 1
     str = str..'"enemyHeroes":{'
     local enemyHeroes = GetUnitList(UNIT_LIST_ENEMY_HEROES)
     for _, value in pairs(enemyHeroes) do
@@ -132,7 +145,7 @@ end
 
 local function dumpEnemyHeroesOther()
     local str = ''
-    count = 1
+    local count = 1
     str = str..'"enemyHeroesOther":{'
     local enemyHeroesOther = GetUnitList(UNIT_LIST_ENEMY_OTHER)
     for _, value in pairs(enemyHeroesOther) do
@@ -148,7 +161,7 @@ end
 
 local function dumpEnemyCreep()
     local str = ''
-    count = 1
+    local count = 1
     str = str..'"enemyCreep":{'
     local enemyCreep = GetUnitList(UNIT_LIST_ENEMY_CREEPS)
     for _, value in pairs(enemyCreep) do
@@ -164,7 +177,7 @@ end
 
 local function dumpEnemyWards()
     local str = ''
-    count = 1
+    local count = 1
     str = str..'"enemyWards":{'
     local enemyWards = GetUnitList(UNIT_LIST_ENEMY_WARDS)
     for _, value in pairs(enemyWards) do
@@ -197,7 +210,7 @@ end
 
 local function dumpDangerousAOEs()
     local str = ''
-    count = 1
+    local count = 1
     str = str..'"dangerousAOEs":{'
     local badAOEs = GetAvoidanceZones()
     for _, aoe in pairs(badAOEs) do
@@ -232,7 +245,7 @@ end
 
 local function dumpDangerousProjectiles()
     local str = ''
-    count = 1
+    local count = 1
     str = str..'"dangerousProjectiles":{'
     local badProjectiles = GetLinearProjectiles()
     for _, projectile in pairs(badProjectiles) do
@@ -264,7 +277,7 @@ end
 
 local function dumpGetIncomingTeleports()
     local str = ''
-    count = 1
+    local count = 1
     str = str..'"incomingTeleports":{'
     local teleports = GetIncomingTeleports()
     for _, value in pairs(teleports) do
@@ -323,7 +336,7 @@ end
 
 local function dumpCastCallback()
     local str = ''
-    count = 1
+    local count = 1
     str = str..'"castCallback":{'
     str = str..callbackStr
     str = str..'}'
