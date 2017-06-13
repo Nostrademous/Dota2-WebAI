@@ -5,10 +5,10 @@
 
 local InventoryHelper = {}
 
-function InventoryHelper:Contains(unit, item, hasToBeActiveSlot)
+function InventoryHelper:Contains(hUnit, item, hasToBeActiveSlot)
     local slots = (hasToBeActiveSlot and 5 or 8)
     for i = 0, slots do
-        local slot = unit:GetItemInSlot(i)
+        local slot = hUnit:GetItemInSlot(i)
         if (slot and slot:GetName() == item) then
             return true
         end
@@ -16,10 +16,10 @@ function InventoryHelper:Contains(unit, item, hasToBeActiveSlot)
     return false
 end
 
-function InventoryHelper:GetItemByName(unit, item_name, hasToBeActiveSlot)
+function InventoryHelper:GetItemByName(hUnit, item_name, hasToBeActiveSlot)
     local slots = (hasToBeActiveSlot and 5 or 8)
     for i = 0, slots do
-        local slot = unit:GetItemInSlot(i)
+        local slot = hUnit:GetItemInSlot(i)
         if (slot and slot:GetName() == item_name) then
             return slot
         end
@@ -43,10 +43,10 @@ function InventoryHelper:WorthOfItemsCanBeBought(build)
     return 0
 end
 
-function InventoryHelper:HasSpareSlot(unit, hasToBeActiveSlot)
+function InventoryHelper:HasSpareSlot(hUnit, hasToBeActiveSlot)
     local slots = (hasToBeActiveSlot and 5 or 8)
     for i = 0, slots do
-        local slot = unit:GetItemInSlot(i)
+        local slot = hUnit:GetItemInSlot(i)
         if (not slot) then
             return true
         end
@@ -54,9 +54,9 @@ function InventoryHelper:HasSpareSlot(unit, hasToBeActiveSlot)
     return false
 end
 
-function InventoryHelper:IsBackpackEmpty(unit)
+function InventoryHelper:IsBackpackEmpty(hUnit)
     for i = 6, 8 do
-        local slot = unit:GetItemInSlot(i)
+        local slot = hUnit:GetItemInSlot(i)
         if (slot) then
             return false
         end
@@ -64,11 +64,11 @@ function InventoryHelper:IsBackpackEmpty(unit)
     return true
 end
 
-function InventoryHelper:MostValuableItemSlot(unit, slot_from, slot_to)
+function InventoryHelper:MostValuableItemSlot(hUnit, slot_from, slot_to)
     local most_value = VERY_LOW_INT
     local most = nil
     for i = slot_from, slot_to do
-        local item = unit:GetItemInSlot(i)
+        local item = hUnit:GetItemInSlot(i)
         if (item and self:Value(item:GetName()) > most_value) then
             most_value = self:Value(item:GetName())
             most = i
@@ -80,11 +80,11 @@ function InventoryHelper:MostValuableItemSlot(unit, slot_from, slot_to)
     return hash
 end
 
-function InventoryHelper:LeastValuableItemSlot(unit, slot_from, slot_to)
+function InventoryHelper:LeastValuableItemSlot(hUnit, slot_from, slot_to)
     local least_value = VERY_HIGH_INT
     local least = nil
     for i = slot_from, slot_to do
-        local item = unit:GetItemInSlot(i)
+        local item = hUnit:GetItemInSlot(i)
         if (item) then
             if (self:Value(item:GetName()) < least_value) then
                 least_value = self:Value(item:GetName())
@@ -93,6 +93,7 @@ function InventoryHelper:LeastValuableItemSlot(unit, slot_from, slot_to)
         else
             least_value = 0
             least = i
+            break
         end
     end
     local hash = {}

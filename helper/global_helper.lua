@@ -33,15 +33,21 @@ function CheckBitmask(bitmask, bit)
     return ((bitmask/bit) % 2) >= 1
 end
 
+function GetSeconds()
+    return math.floor(DotaTime()) % 60
+end
+
 -------------------------------------------------------------------------------
 --- DOTA2 SPECIFIC
 -------------------------------------------------------------------------------
 
+--- TARGET RELATED
 function ValidTarget( hUnit )
     -- handle to the unit cannot be nil and null, and unit has to be alive
     return hUnit ~= nil and not hUnit:IsNull() and hUnit:IsAlive()
 end
 
+--- SHOP RELATED
 function GetShop()
     if (GetTeam() == TEAM_RADIANT) then
         return SHOP_RADIANT
@@ -50,6 +56,17 @@ function GetShop()
     end
 end
 
+function ShopDistance( hUnit, iShop )
+  if (iShop == SHOP_DIRE or iShop == SHOP_RADIANT) then
+    return hUnit:DistanceFromFountain()
+  elseif (iShop == SHOP_SIDE_BOT or iShop == SHOP_SIDE_TOP) then
+    return hUnit:DistanceFromSideShop()
+  else
+    return hUnit:DistanceFromSecretShop()
+  end
+end
+
+--- MAP & GAME ORIENTATION RELATED
 function GetEnemyTeam()
     if (GetTeam() == TEAM_RADIANT) then
         return TEAM_DIRE
@@ -70,6 +87,4 @@ function Hardlane()
     return ((GetTeam() == TEAM_RADIANT) and LANE_TOP or LANE_BOT)
 end
 
-function GetSeconds()
-    return math.floor(DotaTime()) % 60
-end
+

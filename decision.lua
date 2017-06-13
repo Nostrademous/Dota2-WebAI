@@ -3,9 +3,21 @@
 --- GITHUB REPO: https://github.com/Nostrademous/Dota2-WebAI
 -------------------------------------------------------------------------------
 
+--- LOAD OUR GLOBAL CONSTANTS
 require( GetScriptDirectory().."/constants/tables" )
+require( GetScriptDirectory().."/constants/generic" )
+require( GetScriptDirectory().."/constants/roles" )
+require( GetScriptDirectory().."/constants/runes" )
+require( GetScriptDirectory().."/constants/shops" )
+require( GetScriptDirectory().."/constants/fountains" )
+require( GetScriptDirectory().."/constants/jungle" )
+
+--- LOAD OUR HELPERS
 require( GetScriptDirectory().."/helper/global_helper" )
 
+local InvHelp = require( GetScriptDirectory().."/helper/inventory_helper" ))
+
+--- LOAD OUR DEBUG SYSTEM
 dbg = require( GetScriptDirectory().."/debug" )
 
 local think = require( GetScriptDirectory().."/think" )
@@ -81,29 +93,31 @@ end
 -- BASE INITIALIZATION & RESET FUNCTIONS - DO NOT OVER-LOAD
 -------------------------------------------------------------------------------
 
-function X:DoInit(bot)
+function X:DoInit(hBot)
     if not globalInit then
         InitializeGlobalVars()
     end
 
     self.Init = true
-    bot.mybot = self
+    hBot.mybot = self
     
-    self.lastModeThink = -1000.0
+    self.sNextAbility       = nil
+    self.sNextItem          = nil
+    self.lastModeThink      = -1000.0
     
-    self.moving_location = nil
-    self.ability_location = nil
-    self.ability_completed = -1000.0
-    self.attack_target = nil
-    self.attack_target_id = -1
-    self.attack_completed = -1000.0
+    self.moving_location    = nil
+    self.ability_location   = nil
+    self.ability_completed  = -1000.0
+    self.attack_target      = nil
+    self.attack_target_id   = -1
+    self.attack_completed   = -1000.0
     
-    local fullName = bot:GetUnitName()
+    local fullName = hBot:GetUnitName()
     self.Name = string.sub(fullName, 15, string.len(fullName))
 end
 
 function X:ResetTempVars()
-    self.moving_location = nil
+    self.moving_location    = nil
     
     if self.ability_location ~= nil then
         if GameTime() >= self.ability_completed then
@@ -111,7 +125,7 @@ function X:ResetTempVars()
             self.ability_completed = -1000.0
         end
     end
-    
+
     if self.attack_target ~= nil then
         if GameTime() >= self.attack_completed then
             self.attack_completed = -1000.0
@@ -140,12 +154,12 @@ local function ServerUpdate()
     return lastReply.Mode, lastReply.ModeValue
 end
 
-function X:Think(bot)
+function X:Think(hBot)
     -- if we are a human player, don't bother
-    if not bot:IsBot() then return end
+    if not hBot:IsBot() then return end
 
     if not self.Init then
-        self:DoInit(bot)
+        self:DoInit(hBot)
         return
     end
 
@@ -167,11 +181,86 @@ function X:Think(bot)
             highestDesiredMode, highestDesiredValue = think.MainThink()
         end
         
+        -- execute any atomic operations
+        self:ExecuteAtomicOperations(hBot)
+        
         -- execute our current directives
         self:BeginMode(highestDesiredMode, highestDesiredValue)
         self:ExecuteMode()
         
         self.lastModeThink = GameTime()
+    end
+end
+
+-------------------------------------------------------------------------------
+-- ATOMIC OPERATIONS
+-------------------------------------------------------------------------------
+
+function X:ExecuteAtomicOperations(hBot)
+    self:Atomic_LearnAbilities(hBot)
+    self:Atomic_BuyItems(hBot)
+    self:Atomic_SwapItems(hBot)
+end
+
+function X:Atomic_LearnAbilities(hBot)
+    local nAbilityPoints = hBot:GetAbilityPoints()
+    if nAbilityPoints > 0 then
+        local hAbility = hBot:GetAbilityByName(hBot.mybot.sNextAbility)
+        if hAbility and hAbility:CanAbilityBeUpgraded() then
+            hBot:ActionImmediate_LevelAbility(hBot.mybot.sNextAbility)
+            hBot.mybot.sNextAbility = nil
+        else
+            dbg.pause("Trying to level an ability I cannot", hBot.mybot.sNextAbility)
+        end
+    end
+end
+
+function X:Atomic_BuyItems(hBot)
+    if hBot.mybot.sNextItem == nil then retun end
+    
+    if hBot:GetGold() >= GetItemCost(hBot.mybot.sNextItem) then
+        local secret = IsItemPurchasedFromSecretShop(hBot.mybot.sNextItem)
+        local side = IsItemPurchasedFromSideShop(hBot.mybot.sNextItem)
+        local fountain = (not secret)
+
+        local shops = {}
+        -- Determine valid shops that sell the item
+        if (secret and side) then
+            shops = {SHOP_SECRET_RADIANT, SHOP_SECRET_DIRE, SHOP_SIDE_BOT, SHOP_SIDE_TOP}
+        elseif (secret) then
+            shops = {SHOP_SECRET_RADIANT, SHOP_SECRET_DIRE}
+        elseif (side and fountain) then
+            shops = {SHOP_SIDE_BOT, SHOP_SIDE_TOP, SHOP_RADIANT, SHOP_DIRE}
+        elseif (fountain) then
+            shops = {SHOP_RADIANT, SHOP_DIRE}
+        end
+        
+        for i = 1, #shops do
+            local shop = shops[i]
+            if ShopDistance(hBot, shop) <= SHOP_USE_DISTANCE then
+                hBot:ActionImmediate_PurchaseItem(hBot.mybot.sNextItem)
+                hBot.mybot.sNextItem = nil
+                return
+            end
+        end
+    end
+end
+
+function X:Atomic_SwapItems(hBot)
+    local index1 = nil
+    local index2 = nil
+    if not InvHelp:IsBackpackEmpty(hBot) then
+        local i1 = InvHelp:MostValuableItemSlot(hBot, 6, 8)
+        local i2 = InvHelp:LeastValuableItemSlot(hBot, 0, 5)
+
+        if i1.value > i2.value then
+            index1 = i1.slot
+            index2 = i2.slot
+        end
+    end
+
+    if index1 and index2 then
+        hBot:ActionImmediate_SwapItems(index1, index2)
     end
 end
 
