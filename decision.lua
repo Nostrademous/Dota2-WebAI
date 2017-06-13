@@ -238,7 +238,7 @@ function X:Atomic_BuyItems(hBot)
         for i = 1, #shops do
             local shop = shops[i]
             if ShopDistance(hBot, shop) <= SHOP_USE_DISTANCE then
-                hBot:ActionImmediate_PurchaseItem(hBot.mybot.sNextItem)
+                InvHelp:BuyItem(hBot, hBot.mybot.sNextItem)
                 hBot.mybot.sNextItem = nil
                 return
             end

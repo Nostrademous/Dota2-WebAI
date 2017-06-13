@@ -102,8 +102,10 @@ function InventoryHelper:LeastValuableItemSlot(hUnit, slot_from, slot_to)
     return hash
 end
 
-function InventoryHelper:Value(item)
-    return GetItemCost(item)
+function InventoryHelper:Value(sItemName)
+    if sItemName == "item_blink" then return 5000 end
+
+    return GetItemCost(sItemName)
 end
 
 function InventoryHelper:BuyItem( hUnit, sItemName )
