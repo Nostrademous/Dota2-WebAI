@@ -28,6 +28,11 @@ function GetTableKeyNameFromID( hTable, iIndex )
 	return nil
 end
 
+-- checks if a specific bit is set in a bitmask
+function CheckBitmask(bitmask, bit)
+    return ((bitmask/bit) % 2) >= 1
+end
+
 -------------------------------------------------------------------------------
 --- DOTA2 SPECIFIC
 -------------------------------------------------------------------------------

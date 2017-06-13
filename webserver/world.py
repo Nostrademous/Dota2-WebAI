@@ -23,10 +23,13 @@ class World(object):
     def decision(self):
         retJSON = {}
         retJSON["Timestamp"] = timeSinceStart(datetime.datetime.now())
+        print(str(retJSON))
         return retJSON
     
     def update(self, data):
         print('\nUpdate Time: ', data['updateTime'])
+
+        self.updateGlobalTeamInfo(data['globalTeamInfo'])
 
         self.updateEnemyHeroes(data['enemyHeroes'])
         self.updateAlliedHeroes(data['alliedHeroes'])
@@ -46,6 +49,11 @@ class World(object):
         self.updateIncomingTeleports(data['incomingTeleports'])
         
         self.updateCastCallback(data['castCallback'])
+
+    def updateGlobalTeamInfo(self, data):
+        print('Global Info:\n')
+        for entry in data:
+            print(entry, ' ', data[entry])
 
     def updateEnemyHeroes(self, heroData):
         print('Enemies:\n')

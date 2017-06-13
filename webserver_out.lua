@@ -11,10 +11,13 @@ local webserver = {}
 
 local serverNotification = false
 
+webserver.startTime   = -1000.0
 webserver.lastUpdate  = -1000.0
 webserver.lastReply   = nil
 
 local function dumpUnitInfo( hUnit )
+    if not ValidTarget(hUnit) then return "{}" end
+    
     local str = '"' .. hUnit:GetUnitName() .. '":{'
     
     str = str .. '"Health": ' .. hUnit:GetHealth()
@@ -33,20 +36,51 @@ local function dumpUnitInfo( hUnit )
     if hUnit:IsHero() then
         str = str .. ', "ID": ' .. hUnit:GetPlayerID()
         
-        str = str .. ', "Items": {'
+        str = str .. ', "Items": ['
         
         local count = 1
         for iInvIndex = 0, 15, 1 do
-            if count > 1 then str = str .. ', ' end
-            local hItem = GetItemInSlot(iInvIndex)
+            local hItem = hUnit:GetItemInSlot(iInvIndex)
             if hItem ~= nil then
-                str = str .. hItem:GetName()
+                if count > 1 then str = str .. ', ' end
+                str = str .. '"' .. hItem:GetName()
+                local numCharges = hItem:GetCurrentCharges()
+                if numCharges > 1 then
+                    str = str .. '_' .. numCharges
+                end
+                str = str .. '"'
                 count = count + 1
             end
         end
-        str = str .. '}'
+        str = str .. ']'
     end
     
+    str = str .. '}'
+    return str
+end
+
+local function dumpCourierInfo()
+    local numCouriers = GetNumCouriers()
+    local str = '"NumCouriers": ' .. numCouriers
+    if numCouriers > 0 then
+        -- NOTE: GetCourier( iCourier ) is 0-indexed
+        for i = 0, numCouriers-1, 1 do
+            local hCourier = GetCourier(i)
+            str = str .. ', "Courier_' .. tostring(i) .. '": {'
+            str = str .. '"IsFlying": ' .. IsFlyingCourier(hCourier)
+            str = str .. ', "State": ' .. GetCourierState(hCourier)
+            str = str .. ', ' .. dumpUnitInfo( hCourier )
+            str = str .. '}'
+        end
+    end
+    return str
+end
+
+local function dumpGlobalTeamInfo()
+    local str = '"globalTeamInfo":{'
+    
+    str = str .. dumpCourierInfo()
+
     str = str .. '}'
     return str
 end
@@ -230,7 +264,7 @@ local function dumpProjectileInfo( hTable )
     -- NOTE: a projectile will be a table with { "location", "ability", "velocity", "radius", "playerid" }
     local str = '"' .. hTable.playerid .. '":{'
 
-    str = str .. '"Ability": ' .. hTable.ability
+    str = str .. '"Ability": ' .. dkjson.encode(hTable.ability)
     str = str .. ', "Radius": ' .. hTable.radius
     str = str .. ', "Velocity": ' .. hTable.velocity
     
@@ -354,8 +388,8 @@ function webserver.SendData()
         end
     
         local json = '{'
-                
-        json = json..dumpAlliedHeroes()
+        json = json..dumpGlobalTeamInfo()
+        json = json..", "..dumpAlliedHeroes()
         json = json..", "..dumpEnemyHeroes()
         json = json..", "..dumpAlliedHeroesOther()
         json = json..", "..dumpEnemyHeroesOther()
@@ -375,7 +409,7 @@ function webserver.SendData()
         json = json..', "updateTime": ' .. webserver.lastUpdate
         json = json..'}'
         
-        --dbg.myPrint(tostring(json))
+        dbg.myPrint(json)
         
         local req = CreateHTTPRequest( ":2222" )
         req:SetHTTPRequestRawPostBody("application/json", json)
@@ -385,6 +419,8 @@ function webserver.SendData()
                     local obj, pos, err = dkjson.decode(v, 1, nil)
                     if err then
                         print("JSON Decode Error: ", err)
+                        --print("Sent Message: ", json)
+                        print("Msg Body: ", v)
                         webserver.lastReply = nil
                     else
                         webserver.lastReply = obj
@@ -400,8 +436,12 @@ end
 function webserver.GetLastReply( sHeroName )
     if webserver.lastReply == nil then
         if not serverNotification then
-            dbg.pause( "No Server Reply - unpause to continue without server support; reload scripts after starting server to reconfigure" )
-            serverNotification = true
+            if webserver.startTime == -1000.0 then webserver.startTime = GameTime() end
+            
+            if (webserver.startTime + 5.0)  < GameTime() then
+                dbg.pause( "No Server Reply - unpause to continue without server support; reload scripts after starting server to reconfigure" )
+                serverNotification = true
+            end
         end
         return nil
     end

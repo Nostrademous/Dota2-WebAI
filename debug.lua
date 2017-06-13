@@ -27,7 +27,11 @@ function X.myPrint(...)
         
         --uncomment to only see messages by bots mentioned underneath
         --if botname == "invoker" then --or botname == "viper" then
-            print(msg)
+            if string.len(msg) > 2000 then
+                print('[LEN]: ', string.len(msg), ' :: ', msg)
+            else
+                print(msg)
+            end
         --end
     end
 end
