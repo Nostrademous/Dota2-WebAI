@@ -32,6 +32,11 @@ end
 --- DOTA2 SPECIFIC
 -------------------------------------------------------------------------------
 
+function ValidTarget( hUnit )
+    -- handle to the unit cannot be nil and null, and unit has to be alive
+    return hUnit ~= nil and not hUnit:IsNull() and hUnit:IsAlive()
+end
+
 function GetShop()
     if (GetTeam() == TEAM_RADIANT) then
         return SHOP_RADIANT
