@@ -16,22 +16,31 @@ class ItemKB():
         #self.driver = webdriver.Chrome() #If using selenium/chrome #If Selenium/Chrome
         pass
 
-    def getStartingItems(self,heroName):
+    def getStartingItems(self,heroName,desiredLane):
         try:
             resp = requests.get("https://www.dotabuff.com/heroes/"+heroName+"/guides", headers=self.headers)
             resp.raise_for_status() #throw exception for bad status codes
             hdoc = html.fromstring(resp.content)
 
             #Get Stats for all players on page
-            playerStats = hdoc.xpath('//div[@class="r-stats-grid"]')
+            statBlocks = hdoc.xpath('//div[@class="r-stats-grid"]')
 
-            #Get item purchase sets for player 0
-            itemSets =  playerStats[0].xpath('.//div[@class="kv r-none-mobile"]')
+            for statBlock in statBlocks:
 
-            #starting items are in first itemset slot
-            startingItems = [ href.split('/')[-1].replace('-','_') for href in itemSets[0].xpath('.//a/@href')]
+                #Get lane
+                lane = statBlock.xpath('.//i[contains(@class,"lane-icon")]/../text()')[0].strip()
+                if lane != desiredLane:
+                    continue
 
-            return startingItems
+                #Get item purchase sets for player 0
+                itemSets =  statBlock.xpath('.//div[@class="kv r-none-mobile"]')
+
+                #starting items are in first itemset slot
+                startingItems = [ href.split('/')[-1].replace('-','_') for href in itemSets[0].xpath('.//a/@href')]
+
+                return startingItems
+
+            return None
         except:
             print("Exception Occured:{}".format(traceback.format_exc()))
 
@@ -58,4 +67,4 @@ class ItemKB():
 
 if __name__ == "__main__":
     itemkb = ItemKB()
-    print(itemkb.getStartingItems("clockwerk"))
+    print(itemkb.getStartingItems("bristleback","Off Lane"))
