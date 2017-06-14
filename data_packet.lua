@@ -9,7 +9,7 @@ local DataPacket = {}
 
 DataPacket.LastPacket = {}
 
-DataPacket.TYPE_AUTH    = "A"
+DataPacket.TYPE_AUTH    = "X"
 DataPacket.TYPE_WORLD   = "W"
 DataPacket.TYPE_PLAYER  = "P"
 DataPacket.TYPE_ENEMIES = "E"

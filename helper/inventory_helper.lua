@@ -115,7 +115,9 @@ function InventoryHelper:BuyItem( hUnit, sItemName )
         if sError == nil then sError = buyResult end
         
         dbg.pause("[ITEM PURCHASE ERROR] Hero: ", hUnit:GetUnitName(), ", Item: ", sItemName, ", Result: ", sError)
+        return 1
     end
+    return 0
 end
 
 function InventoryHelper:HealthConsumables( hHero )

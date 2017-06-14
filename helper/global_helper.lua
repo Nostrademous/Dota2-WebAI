@@ -76,6 +76,11 @@ function ValidTarget( hUnit )
     return hUnit ~= nil and not hUnit:IsNull() and hUnit:IsAlive()
 end
 
+function GetUnitName( hUnit )
+    local sName = hUnit:GetUnitName()
+    return string.sub(sName, 15, string.len(sName))
+end
+
 --- SHOP RELATED
 function GetShop()
     if (GetTeam() == TEAM_RADIANT) then

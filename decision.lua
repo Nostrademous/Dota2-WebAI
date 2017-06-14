@@ -163,6 +163,11 @@ local function ServerUpdate()
     else
         dbg.myPrint("Need to Process new Player Reply")
         dbg.myPrint("Packet RTT: ", RealTime() - botReply.Time)
+        if botReply.Data then
+            if botReply.Data.StartItems then
+                hBot.mybot.sNextItem = botReply.Data.StartItems
+            end
+        end
     end
 
     return nil, BOT_MODE_DESIRE_NONE
@@ -234,29 +239,34 @@ end
 function X:Atomic_BuyItems(hBot)
     if hBot.mybot.sNextItem == nil then return end
     
-    if hBot:GetGold() >= GetItemCost(hBot.mybot.sNextItem) then
-        local secret = IsItemPurchasedFromSecretShop(hBot.mybot.sNextItem)
-        local side = IsItemPurchasedFromSideShop(hBot.mybot.sNextItem)
-        local fountain = (not secret)
+    while #hBot.mybot.sNextItem > 0 do
+        sNextItem = "item_" .. hBot.mybot.sNextItem[1]
+        if hBot:GetGold() >= GetItemCost(sNextItem) then
+            local secret = IsItemPurchasedFromSecretShop(sNextItem)
+            local side = IsItemPurchasedFromSideShop(sNextItem)
+            local fountain = (not secret)
 
-        local shops = {}
-        -- Determine valid shops that sell the item
-        if (secret and side) then
-            shops = {SHOP_SECRET_RADIANT, SHOP_SECRET_DIRE, SHOP_SIDE_BOT, SHOP_SIDE_TOP}
-        elseif (secret) then
-            shops = {SHOP_SECRET_RADIANT, SHOP_SECRET_DIRE}
-        elseif (side and fountain) then
-            shops = {SHOP_SIDE_BOT, SHOP_SIDE_TOP, SHOP_RADIANT, SHOP_DIRE}
-        elseif (fountain) then
-            shops = {SHOP_RADIANT, SHOP_DIRE}
-        end
-        
-        for i = 1, #shops do
-            local shop = shops[i]
-            if ShopDistance(hBot, shop) <= SHOP_USE_DISTANCE then
-                InvHelp:BuyItem(hBot, hBot.mybot.sNextItem)
-                hBot.mybot.sNextItem = nil
-                return
+            local shops = {}
+            -- Determine valid shops that sell the item
+            if (secret and side) then
+                shops = {SHOP_SECRET_RADIANT, SHOP_SECRET_DIRE, SHOP_SIDE_BOT, SHOP_SIDE_TOP}
+            elseif (secret) then
+                shops = {SHOP_SECRET_RADIANT, SHOP_SECRET_DIRE}
+            elseif (side and fountain) then
+                shops = {SHOP_SIDE_BOT, SHOP_SIDE_TOP, SHOP_RADIANT, SHOP_DIRE}
+            elseif (fountain) then
+                shops = {SHOP_RADIANT, SHOP_DIRE}
+            end
+            
+            for i = 1, #shops do
+                local shop = shops[i]
+                if ShopDistance(hBot, shop) <= SHOP_USE_DISTANCE then
+                    local buyRet = InvHelp:BuyItem(hBot, sNextItem)
+                    if buyRet == 0 then
+                        table.remove(hBot.mybot.sNextItem, 1)
+                    end
+                    return
+                end
             end
         end
     end

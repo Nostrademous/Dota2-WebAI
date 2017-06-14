@@ -5,11 +5,6 @@
 
 local X = {}
 
-local function GetUnitName( hUnit )
-    local sName = hUnit:GetUnitName()
-    return string.sub(sName, 15, string.len(sName));
-end
-
 function X.myPrint(...)
     local args = {...}
     

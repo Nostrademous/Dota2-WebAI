@@ -23,6 +23,11 @@ def writeHeroDataLua(obj):
             except KeyError as e:
                 print 'Error dumping [Type]: ', heroName
 
+            try:
+                st = st + 'X.%s.%s = "%s"\n' % (heroName, 'Name', heroes[heroName]['Name'])
+            except KeyError as e:
+                print 'Error dumping [Name]: ', heroName
+
             indx = 0
             for ability in heroes[heroName]['Abilities']:
                 st = st + 'X.%s.SKILL_%d = "%s"\n' % (heroName, indx, ability)
@@ -78,6 +83,7 @@ if __name__ == "__main__":
             heroes[heroName] = {}
             heroes[heroName]['Abilities'] = []
             heroes[heroName]['Talents'] = []
+            heroes[heroName]['Name'] = ""
             continue
 
         if line == '{':
@@ -100,6 +106,14 @@ if __name__ == "__main__":
                 key, val = line.split()
                 heroes[heroName]['Role'] = val[1:-1]
 
+            if line[1:4] == 'url':
+                try:
+                    key, val = line.split()
+                    heroes[heroName]['Name'] = val.strip('"')
+                except ValueError as e:
+                    print 'Error: ', line
+                    break
+                
             if line[1:8] == 'Ability' and line[1:14] != 'AbilityLayout' and line[1:15] != 'AbilityPreview' and line[1:21] != 'AbilityDraftDisabled':
                 try:
                     key, val = line.split()

@@ -23,10 +23,11 @@ local function dumpHeroInfo( hHero )
     local data = {}
     
     if hHero.mybot then
-        data.Name   = hHero.mybot.Name
+        data.Name   = heroData[hHero.mybot.Name].Name:lower()
     else
-        data.Name   = hHero:GetUnitName()
+        data.Name   = heroData[GetUnitName(hHero)].Name:lower()
     end
+    data.Team       = hHero:GetTeam()
     data.Level      = hHero:GetLevel()
     data.Health     = hHero:GetHealth()
     data.MaxHealth  = hHero:GetMaxHealth()
@@ -450,7 +451,7 @@ function webserver.SendPacket( json )
                     --print( tostring(jsonReply) )
                     packet:ProcessPacket(jsonReply.Type, jsonReply)
                     
-                    if jsonReply.Type == "A" then
+                    if jsonReply.Type == packet.TYPE_AUTH then
                         webserverFound = true
                         print("Connected Successfully to Backend Server")
                     end

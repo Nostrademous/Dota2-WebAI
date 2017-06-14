@@ -26,8 +26,8 @@ class World(object):
     def update(self, data):
         dataType = data['Type']
         
-        # A -- Authentication Packet
-        if dataType == 'A':
+        # X -- Authentication Packet
+        if dataType == 'X':
             self.generateAuthenticationReply(data['Time'])
         # W -- World Update Packet
         elif dataType == 'W':
@@ -58,14 +58,16 @@ class World(object):
             self.generateEnemiesReply(data['Time'])
         # P* -- Player Update Packet
         elif dataType[0] == 'P':
-            self.generatePlayerUpdateReply(data['Time'], dataType)
+            cHero = self.updateHero(data['Data'], int(dataType[1:]))
+            cHero.processHero()
+            self.generatePlayerUpdateReply(data['Time'], dataType, cHero.getReply())
         # ? -- Unknown
         else:
             print('Error:', 'Unknown Packet Type:', dataType)
 
     def generateAuthenticationReply(self, time):
         self.reply = {}
-        self.reply["Type"] = 'A'
+        self.reply["Type"] = 'X'
         self.reply["Time"] = time
         
     def generateWorldUpdateReply(self, time):
@@ -78,10 +80,13 @@ class World(object):
         self.reply["Type"] = 'E'
         self.reply["Time"] = time
         
-    def generatePlayerUpdateReply(self, time, pID):
+    def generatePlayerUpdateReply(self, time, pID, reply):
         self.reply = {}
         self.reply["Type"] = pID
         self.reply["Time"] = time
+        if len(reply) > 0:
+            print('Have Data: ', reply)
+            self.reply["Data"] = reply
     
     def updateCourierData(self, data):
         print('Courier Data:\n')
@@ -94,11 +99,10 @@ class World(object):
             cHero = Hero(hero, heroData[hero]['ID'], heroData[hero]['Team'], heroData[hero])
             print(cHero)
         
-    def updateAlliedHeroes(self, heroData):
-        print('Allies:\n')
-        for hero in heroData:
-            cHero = Hero(hero, heroData[hero]['ID'], heroData[hero]['Team'], heroData[hero])
-            print(cHero)
+    def updateHero(self, heroData, pID):
+        cHero = Hero(heroData['Name'], pID, heroData['Team'], heroData)
+        print(cHero)
+        return cHero
     
     def updateOtherEnemyUnits(self, data):
         print('Other Enemy Units:\n')
