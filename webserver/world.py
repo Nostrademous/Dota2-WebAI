@@ -26,14 +26,13 @@ class World(object):
     def update(self, data):
         dataType = data['Type']
         
-        # 0 -- Authentication Packet
+        # A -- Authentication Packet
         if dataType == 'A':
             self.generateAuthenticationReply(data['Time'])
-        # 1 -- World Update Packet
+        # W -- World Update Packet
         elif dataType == 'W':
+            self.updateCourierData(data['CourierData'])
             '''
-            self.updateGlobalTeamInfo(data['globalTeamInfo'])
-
             self.updateEnemyHeroes(data['enemyHeroes'])
             self.updateAlliedHeroes(data['alliedHeroes'])
             
@@ -54,8 +53,10 @@ class World(object):
             self.updateCastCallback(data['castCallback'])
             '''
             self.generateWorldUpdateReply(data['Time'])
-            
-        # 2 -- Player Update Packet
+        # E -- Enemies Update Packet
+        elif dataType == 'E':
+            self.generateEnemiesReply(data['Time'])
+        # P* -- Player Update Packet
         elif dataType[0] == 'P':
             self.generatePlayerUpdateReply(data['Time'], dataType)
         # ? -- Unknown
@@ -72,13 +73,18 @@ class World(object):
         self.reply["Type"] = 'W'
         self.reply["Time"] = time
         
+    def generateEnemiesReply(self, time):
+        self.reply = {}
+        self.reply["Type"] = 'E'
+        self.reply["Time"] = time
+        
     def generatePlayerUpdateReply(self, time, pID):
         self.reply = {}
         self.reply["Type"] = pID
         self.reply["Time"] = time
     
-    def updateGlobalTeamInfo(self, data):
-        print('Global Info:\n')
+    def updateCourierData(self, data):
+        print('Courier Data:\n')
         for entry in data:
             print(entry, ' ', data[entry])
 

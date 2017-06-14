@@ -146,8 +146,14 @@ local function ServerUpdate()
 
     local worldReply = server.GetLastReply(dp.TYPE_WORLD)
     if worldReply ~= nil then
-        dbg.myPrint("Need to Process new World Update")
+        dbg.myPrint("Need to Process new World Reply")
         dbg.myPrint("Packet RTT: ", RealTime() - worldReply.Time)
+    end
+    
+    local enemiesReply = server.GetLastReply(dp.TYPE_ENEMIES)
+    if enemiesReply ~= nil then
+        dbg.myPrint("Need to Process new Enemies Reply")
+        dbg.myPrint("Packet RTT: ", RealTime() - enemiesReply.Time)
     end
     
     local botReply = server.GetLastReply(dp.TYPE_PLAYER..tostring(hBot:GetPlayerID()))
@@ -155,7 +161,7 @@ local function ServerUpdate()
     if botReply == nil then
         return nil, BOT_MODE_DESIRE_NONE
     else
-        dbg.myPrint("Need to Process new Player Update")
+        dbg.myPrint("Need to Process new Player Reply")
         dbg.myPrint("Packet RTT: ", RealTime() - botReply.Time)
     end
 

@@ -3,6 +3,7 @@
 --- GITHUB REPO: https://github.com/Nostrademous/Dota2-FullOverwrite
 -------------------------------------------------------------------------------
 
+--[[
 function ItemUsageThink()
     return
 end
@@ -22,3 +23,4 @@ end
 function AbilityLevelUpThink()
     return
 end
+--]]

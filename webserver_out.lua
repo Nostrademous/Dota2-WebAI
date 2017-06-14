@@ -15,6 +15,7 @@ local webserverAuthTried = false
 
 webserver.startTime         = -1000.0
 webserver.lastWorldUpdate   = -1000.0
+webserver.lastEnemiesUpdate = -1000.0
 webserver.lastReply         = nil
 
 local function dumpHeroInfo( hHero )
@@ -33,8 +34,6 @@ local function dumpHeroInfo( hHero )
     data.Mana       = hHero:GetMana()
     data.MaxMana    = hHero:GetMaxMana()
     data.ManaReg    = hHero:GetManaRegen()
-    data.Gold       = hHero:GetGold()
-    data.AP         = hHero:GetAbilityPoints()
     data.MS         = hHero:GetCurrentMovementSpeed()
     
     local loc = hHero:GetLocation()
@@ -55,9 +54,14 @@ local function dumpHeroInfo( hHero )
         end
     end
     data.Items      = items
+    
+    -- this is data only available to heroes on my team
+    if hHero:GetTeam() == GetTeam() then
+        data.Gold       = hHero:GetGold()
+        data.AP         = hHero:GetAbilityPoints()
+    end
 
-    local json = dkjson.encode(data)
-    return json
+    return data
 end
 
 local function dumpUnitInfo( hUnit )
@@ -105,45 +109,46 @@ local function dumpUnitInfo( hUnit )
 end
 
 local function dumpCourierInfo()
+    local data = {}
+    
     local numCouriers = GetNumCouriers()
-    local str = '"NumCouriers": ' .. numCouriers
+    data.Num = GetNumCouriers()
+
     if numCouriers > 0 then
         -- NOTE: GetCourier( iCourier ) is 0-indexed
         for i = 0, numCouriers-1, 1 do
             local hCourier = GetCourier(i)
-            str = str .. ', "Courier_' .. tostring(i) .. '": {'
-            str = str .. '"IsFlying": ' .. IsFlyingCourier(hCourier)
-            str = str .. ', "State": ' .. GetCourierState(hCourier)
-            str = str .. ', ' .. dumpUnitInfo( hCourier )
-            str = str .. '}'
+            local cdata = {}
+
+            cdata.Health    = hCourier:GetHealth()
+            cdata.Fly       = IsFlyingCourier(hCourier)
+            cdata.State     = GetCourierState(hCourier)
+            
+            local loc = hCourier:GetLocation()
+            cdata.X = loc.x
+            cdata.Y = loc.y
+            cdata.Z = loc.z
+            
+            data["C_"..tostring(i+1)] = cdata
         end
     end
-    return str
-end
-
-local function dumpGlobalTeamInfo()
-    local str = '"globalTeamInfo":{'
     
-    str = str .. dumpCourierInfo()
-
-    str = str .. '}'
-    return str
+    return data
 end
 
 local function dumpAlliedHeroes()
-    local str = ''
-    local count = 1
-    str = str..'"alliedHeroes":{'
+    local data = {}
+    
     local alliedHeroes = GetUnitList(UNIT_LIST_ALLIED_HEROES)
-    for _, value in pairs(alliedHeroes) do
-        if count > 1 then str = str..', ' end
-
-        str = str .. dumpUnitInfo( value )
-
-        count = count + 1
+    for _, ally in pairs(alliedHeroes) do
+        if not ally:IsBot() or ally.mybot == nil then
+            if not ally:IsIllusion() then
+                data["Ally_"..tostring(ally:GetPlayerID())] = dumpHeroInfo(ally)
+            end
+        end
     end
-    str = str..'}'
-    return str
+    
+    return data
 end
 
 local function dumpAlliedHeroesOther()
@@ -208,18 +213,24 @@ local function dumpNeutralCreep()
     return str
 end
 
-local function dumpEnemyHeroes()
-    local str = ''
-    local count = 1
-    str = str..'"enemyHeroes":{'
+local function dumpEnemyHeroes()    
+    local data = {}
+    
     local enemyHeroes = GetUnitList(UNIT_LIST_ENEMY_HEROES)
-    for _, value in pairs(enemyHeroes) do
-        if count > 1 then str = str..', ' end
-        str = str .. dumpUnitInfo( value )
-        count = count + 1
+    for _, enemy in pairs(enemyHeroes) do
+        if ValidTarget(enemy) then
+            -- we add a _# to handle illusions for enemies
+            local count = 1
+            local key = "E_"..tostring(enemy:GetPlayerID()).."_"..tostring(count)
+            while InTable(data, key) do
+                count = count + 1
+                key = "E_"..tostring(enemy:GetPlayerID()).."_"..tostring(count)
+            end
+            data[key] = dumpHeroInfo(enemy)
+        end
     end
-    str = str..'}'
-    return str
+    
+    return data
 end
 
 local function dumpEnemyHeroesOther()
@@ -477,6 +488,16 @@ function webserver.SendData(hBot)
             webserver.SendPacket(jsonData)
         end
         
+        -- check if we need to send an Enemies Update Packet
+        if packet.LastPacket[packet.TYPE_ENEMIES] == nil or packet.LastPacket[packet.TYPE_ENEMIES].processed
+            or (GameTime() - webserver.lastEnemiesUpdate) > 0.25 then
+            local jsonData = webserver.CreateEnemiesUpdate()
+            packet:CreatePacket(packet.TYPE_ENEMIES, jsonData)
+            webserver.lastEnemiesUpdate = GameTime()
+            dbg.myPrint("Sending Enemies Update: ", tostring(jsonData))
+            webserver.SendPacket(jsonData)
+        end
+        
         -- check if we need to send a Player Update Packet
         local id = packet.TYPE_PLAYER .. tostring(hBot:GetPlayerID())
         if packet.LastPacket[id] == nil or packet.LastPacket[id].processed then
@@ -488,24 +509,25 @@ function webserver.SendData(hBot)
     end
 end
 
-
 function webserver.CreateAuthPacket()
-    local json = '{'
-    json = json..'"Type": "' .. packet.TYPE_AUTH .. '"'
-    json = json..', "Time": ' .. RealTime()
-    json = json..'}'
-    return json
+    local json = {}
+    
+    json.Type = packet.TYPE_AUTH
+    json.Time = RealTime()
+    
+    return dkjson.encode(json)
 end
 
 function webserver.CreateWorldUpdate()
-    local json = '{'
+    local json = {}
     
-    json = json..'"Type": "' .. packet.TYPE_WORLD .. '"'
-    json = json..', "Time": ' .. RealTime()
+    json.Type = packet.TYPE_WORLD
+    json.Time = RealTime()
+    
+    json.CourierData    = dumpCourierInfo()
+    json.AlliedHeroes   = dumpAlliedHeroes()
     
     --[[
-    json = json..", "..dumpGlobalTeamInfo()
-    json = json..", "..dumpAlliedHeroes()
     json = json..", "..dumpEnemyHeroes()
     json = json..", "..dumpAlliedHeroesOther()
     json = json..", "..dumpEnemyHeroesOther()
@@ -520,20 +542,29 @@ function webserver.CreateWorldUpdate()
     json = json..", "..dumpCastCallback()
     --]]
     
-    json = json..'}'
-    return json
+    return dkjson.encode(json)
 end
 
 function webserver.CreatePlayerUpdate(hBot)
-    local json = '{'
+    local json = {}
     
-    json = json .. '"Type": "' .. packet.TYPE_PLAYER .. tostring(hBot:GetPlayerID()) .. '"'
-    json = json .. ', "Time": ' .. RealTime()
+    json.Type = packet.TYPE_PLAYER .. tostring(hBot:GetPlayerID())
+    json.Time = RealTime()
     
-    json = json .. ', "Data": ' .. dumpHeroInfo(hBot)
+    json.Data = dumpHeroInfo(hBot)
     
-    json = json..'}'
-    return json
+    return dkjson.encode(json)
+end
+
+function webserver.CreateEnemiesUpdate()
+    local json = {}
+    
+    json.Type = packet.TYPE_ENEMIES
+    json.Time = RealTime()
+    
+    json.Data = dumpEnemyHeroes()
+    
+    return dkjson.encode(json)
 end
 
 function webserver.GetLastReply(sType)

@@ -14,6 +14,28 @@ function InitializeGlobalVars()
     globalInit = true
 end
 
+--- TABLE RELATED
+function InTable(tab, val)
+    if not tab then return false end
+    for index, value in ipairs (tab) do
+        if value == val then
+            return true
+        end
+    end
+
+    return false
+end
+
+function PosInTable(tab, val)
+    for index,value in ipairs(tab) do
+        if value == val then
+            return index
+        end
+    end
+
+    return -1
+end
+
 function GetTableKeyNameFromID( hTable, iIndex )
 	if hTable == nil or iIndex == nil then
 		return "nil"
@@ -27,7 +49,9 @@ function GetTableKeyNameFromID( hTable, iIndex )
 	
 	return nil
 end
+-------------------------------------------------------------------------------
 
+--- MATH & TIME RELATED
 -- checks if a specific bit is set in a bitmask
 function CheckBitmask(bitmask, bit)
     return ((bitmask/bit) % 2) >= 1

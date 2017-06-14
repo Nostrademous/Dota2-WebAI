@@ -12,6 +12,7 @@ DataPacket.LastPacket = {}
 DataPacket.TYPE_AUTH    = "A"
 DataPacket.TYPE_WORLD   = "W"
 DataPacket.TYPE_PLAYER  = "P"
+DataPacket.TYPE_ENEMIES = "E"
 
 function DataPacket:CreatePacket(key, packet)
     --local seq = Round(RealTime(), 3) * 1000
