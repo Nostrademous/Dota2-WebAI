@@ -5,11 +5,6 @@
 
 local X = {}
 
-local function Round(num, numDecimalPlaces)
-    local mult = 10^(numDecimalPlaces or 0)
-    return math.floor(num * mult + 0.5) / mult
-end
-
 local function GetUnitName( hUnit )
     local sName = hUnit:GetUnitName()
     return string.sub(sName, 15, string.len(sName));
@@ -19,7 +14,17 @@ function X.myPrint(...)
     local args = {...}
     
     if #args > 0 then
-        local botname = GetBot().mybot.Name
+        local hBot = GetBot()
+        local botname = "<UNKNOWN>"
+
+        if hBot then
+            if hBot.myBot then
+                botname = GetBot().mybot.Name
+            else
+                botname = hBot:GetUnitName()
+            end
+        end
+
         local msg = tostring(Round(GameTime(), 5)).." [" .. botname .. "]: "
         for i,v in ipairs(args) do
             msg = msg .. tostring(v)

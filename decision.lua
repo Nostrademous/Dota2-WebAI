@@ -15,7 +15,8 @@ require( GetScriptDirectory().."/constants/jungle" )
 --- LOAD OUR HELPERS
 require( GetScriptDirectory().."/helper/global_helper" )
 
-local InvHelp = require( GetScriptDirectory().."/helper/inventory_helper" ))
+local dp = require( GetScriptDirectory().."/data_packet" )
+local InvHelp = require( GetScriptDirectory().."/helper/inventory_helper" )
 
 --- LOAD OUR DEBUG SYSTEM
 dbg = require( GetScriptDirectory().."/debug" )
@@ -139,19 +140,26 @@ end
 
 local lastReply = nil
 local function ServerUpdate()
-    server.SendData()
-
-    local reply = server.GetLastReply(GetBot():GetUnitName())
+    local hBot = GetBot()
     
-    if reply == nil then
+    server.SendData(hBot)
+
+    local worldReply = server.GetLastReply(dp.TYPE_WORLD)
+    if worldReply ~= nil then
+        dbg.myPrint("Need to Process new World Update")
+        dbg.myPrint("Packet RTT: ", RealTime() - worldReply.Time)
+    end
+    
+    local botReply = server.GetLastReply(dp.TYPE_PLAYER..tostring(hBot:GetPlayerID()))
+    
+    if botReply == nil then
         return nil, BOT_MODE_DESIRE_NONE
     else
-        if lastReply ~= reply then
-            lastReply = reply
-        end
+        dbg.myPrint("Need to Process new Player Update")
+        dbg.myPrint("Packet RTT: ", RealTime() - botReply.Time)
     end
 
-    return lastReply.Mode, lastReply.ModeValue
+    return nil, BOT_MODE_DESIRE_NONE
 end
 
 function X:Think(hBot)
@@ -203,6 +211,8 @@ function X:ExecuteAtomicOperations(hBot)
 end
 
 function X:Atomic_LearnAbilities(hBot)
+    if hBot.mybot.sNextAbility == nil then return end
+    
     local nAbilityPoints = hBot:GetAbilityPoints()
     if nAbilityPoints > 0 then
         local hAbility = hBot:GetAbilityByName(hBot.mybot.sNextAbility)
@@ -216,7 +226,7 @@ function X:Atomic_LearnAbilities(hBot)
 end
 
 function X:Atomic_BuyItems(hBot)
-    if hBot.mybot.sNextItem == nil then retun end
+    if hBot.mybot.sNextItem == nil then return end
     
     if hBot:GetGold() >= GetItemCost(hBot.mybot.sNextItem) then
         local secret = IsItemPurchasedFromSecretShop(hBot.mybot.sNextItem)

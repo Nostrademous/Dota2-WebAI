@@ -15,41 +15,68 @@ def timeSinceStart(dt):
 
 class World(object):
     def __init__(self):
-        self.lastUpdate = timeSinceStart(datetime.datetime.now())
+        self.reply = {}
 
     def __repr__(self):
-        return 'Last Update TimeStamp: %ull' % (self.lastUpdate)
+        return 'Last Reply %s' % (self.reply)
 
     def decision(self):
-        retJSON = {}
-        retJSON["Timestamp"] = timeSinceStart(datetime.datetime.now())
-        print(str(retJSON))
-        return retJSON
+        return self.reply
     
     def update(self, data):
-        print('\nUpdate Time: ', data['updateTime'])
+        dataType = data['Type']
+        
+        # 0 -- Authentication Packet
+        if dataType == 'A':
+            self.generateAuthenticationReply(data['Time'])
+        # 1 -- World Update Packet
+        elif dataType == 'W':
+            '''
+            self.updateGlobalTeamInfo(data['globalTeamInfo'])
 
-        self.updateGlobalTeamInfo(data['globalTeamInfo'])
+            self.updateEnemyHeroes(data['enemyHeroes'])
+            self.updateAlliedHeroes(data['alliedHeroes'])
+            
+            self.updateOtherEnemyUnits(data['enemyHeroesOther'])
+            self.updateOtherAlliedUnits(data['alliedHeroesOther'])
+            
+            self.updateEnemyCreep(data['enemyCreep'])
+            self.updateAlliedCreep(data['alliedCreep'])
+            self.updateNeutralCreep(data['neutralCreep'])
+            
+            self.updateEnemyWards(data['enemyWards'])
+            self.updateAlliedWards(data['alliedWards'])
+            
+            self.updateAOEs(data['dangerousAOEs'])
+            self.updateProjectiles(data['dangerousProjectiles'])
+            self.updateIncomingTeleports(data['incomingTeleports'])
+            
+            self.updateCastCallback(data['castCallback'])
+            '''
+            self.generateWorldUpdateReply(data['Time'])
+            
+        # 2 -- Player Update Packet
+        elif dataType[0] == 'P':
+            self.generatePlayerUpdateReply(data['Time'], dataType)
+        # ? -- Unknown
+        else:
+            print('Error:', 'Unknown Packet Type:', dataType)
 
-        self.updateEnemyHeroes(data['enemyHeroes'])
-        self.updateAlliedHeroes(data['alliedHeroes'])
+    def generateAuthenticationReply(self, time):
+        self.reply = {}
+        self.reply["Type"] = 'A'
+        self.reply["Time"] = time
         
-        self.updateOtherEnemyUnits(data['enemyHeroesOther'])
-        self.updateOtherAlliedUnits(data['alliedHeroesOther'])
+    def generateWorldUpdateReply(self, time):
+        self.reply = {}
+        self.reply["Type"] = 'W'
+        self.reply["Time"] = time
         
-        self.updateEnemyCreep(data['enemyCreep'])
-        self.updateAlliedCreep(data['alliedCreep'])
-        self.updateNeutralCreep(data['neutralCreep'])
-        
-        self.updateEnemyWards(data['enemyWards'])
-        self.updateAlliedWards(data['alliedWards'])
-        
-        self.updateAOEs(data['dangerousAOEs'])
-        self.updateProjectiles(data['dangerousProjectiles'])
-        self.updateIncomingTeleports(data['incomingTeleports'])
-        
-        self.updateCastCallback(data['castCallback'])
-
+    def generatePlayerUpdateReply(self, time, pID):
+        self.reply = {}
+        self.reply["Type"] = pID
+        self.reply["Time"] = time
+    
     def updateGlobalTeamInfo(self, data):
         print('Global Info:\n')
         for entry in data:

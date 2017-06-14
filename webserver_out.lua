@@ -6,14 +6,59 @@
 dkjson = require( "game/dkjson" )
 
 local dbg = require( GetScriptDirectory().."/debug" )
+local packet = require( GetScriptDirectory().."/data_packet" )
 
 local webserver = {}
 
-local serverNotification = false
+local webserverFound = false
+local webserverAuthTried = false
 
-webserver.startTime   = -1000.0
-webserver.lastUpdate  = -1000.0
-webserver.lastReply   = nil
+webserver.startTime         = -1000.0
+webserver.lastWorldUpdate   = -1000.0
+webserver.lastReply         = nil
+
+local function dumpHeroInfo( hHero )
+    if not ValidTarget(hHero) then return "{}" end
+    local data = {}
+    
+    if hHero.mybot then
+        data.Name   = hHero.mybot.Name
+    else
+        data.Name   = hHero:GetUnitName()
+    end
+    data.Level      = hHero:GetLevel()
+    data.Health     = hHero:GetHealth()
+    data.MaxHealth  = hHero:GetMaxHealth()
+    data.HealthReg  = hHero:GetHealthRegen()
+    data.Mana       = hHero:GetMana()
+    data.MaxMana    = hHero:GetMaxMana()
+    data.ManaReg    = hHero:GetManaRegen()
+    data.Gold       = hHero:GetGold()
+    data.AP         = hHero:GetAbilityPoints()
+    data.MS         = hHero:GetCurrentMovementSpeed()
+    
+    local loc = hHero:GetLocation()
+    data.X          = loc.x
+    data.Y          = loc.y
+    data.Z          = loc.z
+    
+    local items = {}
+    for iInvIndex = 0, 15, 1 do
+        local hItem = hHero:GetItemInSlot(iInvIndex)
+        if hItem ~= nil then
+            local str = hItem:GetName()
+            local numCharges = hItem:GetCurrentCharges()
+            if numCharges > 1 then
+                str = str .. '_' .. numCharges
+            end
+            table.insert(items, str)
+        end
+    end
+    data.Items      = items
+
+    local json = dkjson.encode(data)
+    return json
+end
 
 local function dumpUnitInfo( hUnit )
     if not ValidTarget(hUnit) then return "{}" end
@@ -379,86 +424,120 @@ local function dumpCastCallback()
     return str
 end
 
-function webserver.SendData()
-    if not serverNotification and (GameTime() - webserver.lastUpdate) > 0.5 then
+function webserver.SendPacket( json )
+    local req = CreateHTTPRequest( ":2222" )
+    req:SetHTTPRequestRawPostBody("application/json", json)
+    req:Send( function( result )
+        for k,v in pairs( result ) do
+            if k == "Body" then
+                local jsonReply, pos, err = dkjson.decode(v, 1, nil)
+                if err then
+                    print("JSON Decode Error: ", err)
+                    print("Sent Message: ", json)
+                    print("Msg Body: ", v)
+                else
+                    --print( tostring(jsonReply) )
+                    packet:ProcessPacket(jsonReply.Type, jsonReply)
+                    
+                    if jsonReply.Type == "A" then
+                        webserverFound = true
+                        print("Connected Successfully to Backend Server")
+                    end
+                end
+                --break
+            end
+        end
+    end )
+end
+
+function webserver.SendData(hBot)
+    -- if we have not verified the presence of a webserver yet, send authentication packet
+    if not webserverFound and not webserverAuthTried then
+        webserverAuthTried = true
+        local jsonData = webserver.CreateAuthPacket()
+        packet:CreatePacket(packet.TYPE_AUTH, jsonData)
+        webserver.SendPacket(jsonData)
+    end
     
+    -- if we have a webserver
+    if webserverFound then
+        -- initialize our cast callback if we have not done so yet
         if not callbackInit then
             InstallCastCallback(-1, callbackFunc)
             callbackInit = true
         end
     
-        local json = '{'
-        json = json..dumpGlobalTeamInfo()
-        json = json..", "..dumpAlliedHeroes()
-        json = json..", "..dumpEnemyHeroes()
-        json = json..", "..dumpAlliedHeroesOther()
-        json = json..", "..dumpEnemyHeroesOther()
-        json = json..", "..dumpAlliedCreep()
-        json = json..", "..dumpNeutralCreep()
-        json = json..", "..dumpEnemyCreep()
-        json = json..", "..dumpAlliedWards()
-        json = json..", "..dumpEnemyWards()
-        json = json..", "..dumpDangerousAOEs()
-        json = json..", "..dumpDangerousProjectiles()
-        json = json..", "..dumpGetIncomingTeleports()
-        json = json..", "..dumpCastCallback()
+        -- check if we need to send a World Update Packet
+        if packet.LastPacket[packet.TYPE_WORLD] == nil or packet.LastPacket[packet.TYPE_WORLD].processed
+            or (GameTime() - webserver.lastWorldUpdate) > 0.5 then
+            local jsonData = webserver.CreateWorldUpdate()
+            packet:CreatePacket(packet.TYPE_WORLD, jsonData)
+            webserver.lastWorldUpdate = GameTime()
+            dbg.myPrint("Sending World Update: ", tostring(jsonData))
+            webserver.SendPacket(jsonData)
+        end
         
-        webserver.lastUpdate = GameTime()
-        --dbg.myPrint("LastUpdate - ", webserver.lastUpdate)
-        
-        json = json..', "updateTime": ' .. webserver.lastUpdate
-        json = json..'}'
-        
-        dbg.myPrint(json)
-        
-        local req = CreateHTTPRequest( ":2222" )
-        req:SetHTTPRequestRawPostBody("application/json", json)
-        req:Send( function( result )
-            for k,v in pairs( result ) do
-                if k == "Body" then
-                    local obj, pos, err = dkjson.decode(v, 1, nil)
-                    if err then
-                        print("JSON Decode Error: ", err)
-                        --print("Sent Message: ", json)
-                        print("Msg Body: ", v)
-                        webserver.lastReply = nil
-                    else
-                        webserver.lastReply = obj
-                        --print( webserver.lastReply )
-                    end
-                    break
-                end
-            end
-        end )
+        -- check if we need to send a Player Update Packet
+        local id = packet.TYPE_PLAYER .. tostring(hBot:GetPlayerID())
+        if packet.LastPacket[id] == nil or packet.LastPacket[id].processed then
+            local jsonData = webserver.CreatePlayerUpdate(hBot)
+            packet:CreatePacket(id, jsonData)
+            dbg.myPrint("Sending Player Update: ", tostring(jsonData))
+            webserver.SendPacket(jsonData)
+        end
     end
 end
 
-function webserver.GetLastReply( sHeroName )
-    if webserver.lastReply == nil then
-        if not serverNotification then
-            if webserver.startTime == -1000.0 then webserver.startTime = GameTime() end
-            
-            if (webserver.startTime + 5.0)  < GameTime() then
-                dbg.pause( "No Server Reply - unpause to continue without server support; reload scripts after starting server to reconfigure" )
-                serverNotification = true
-            end
-        end
-        return nil
-    end
+
+function webserver.CreateAuthPacket()
+    local json = '{'
+    json = json..'"Type": "' .. packet.TYPE_AUTH .. '"'
+    json = json..', "Time": ' .. RealTime()
+    json = json..'}'
+    return json
+end
+
+function webserver.CreateWorldUpdate()
+    local json = '{'
     
-    dbg.myPrint( webserver.lastReply.Timestamp )
+    json = json..'"Type": "' .. packet.TYPE_WORLD .. '"'
+    json = json..', "Time": ' .. RealTime()
     
-    -- if we are not provided a hero name, return full last reply
-    if sHeroName == nil and webserver.lastReply then
-        return webserver.lastReply
-    end
+    --[[
+    json = json..", "..dumpGlobalTeamInfo()
+    json = json..", "..dumpAlliedHeroes()
+    json = json..", "..dumpEnemyHeroes()
+    json = json..", "..dumpAlliedHeroesOther()
+    json = json..", "..dumpEnemyHeroesOther()
+    json = json..", "..dumpAlliedCreep()
+    json = json..", "..dumpNeutralCreep()
+    json = json..", "..dumpEnemyCreep()
+    json = json..", "..dumpAlliedWards()
+    json = json..", "..dumpEnemyWards()
+    json = json..", "..dumpDangerousAOEs()
+    json = json..", "..dumpDangerousProjectiles()
+    json = json..", "..dumpGetIncomingTeleports()
+    json = json..", "..dumpCastCallback()
+    --]]
     
-    -- if we are provided a hero name, return reply for that hero
-    if webserver.lastReply[sHeroName] ~= nil then
-        return webserver.lastReply[sHeroName]
-    end
+    json = json..'}'
+    return json
+end
+
+function webserver.CreatePlayerUpdate(hBot)
+    local json = '{'
     
-    return nil
+    json = json .. '"Type": "' .. packet.TYPE_PLAYER .. tostring(hBot:GetPlayerID()) .. '"'
+    json = json .. ', "Time": ' .. RealTime()
+    
+    json = json .. ', "Data": ' .. dumpHeroInfo(hBot)
+    
+    json = json..'}'
+    return json
+end
+
+function webserver.GetLastReply(sType)
+    return packet:GetLastReply(sType)
 end
 
 return webserver
