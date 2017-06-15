@@ -120,6 +120,20 @@ function InventoryHelper:BuyItem( hUnit, sItemName )
     return 0
 end
 
+--[[
+function InventoryHelper:GetComponents( sItemName, finalList )
+    local components = GetItemComponents(sItemName)
+    
+    if #components == 1 then
+        table.insert(finalList, components[1])
+    elseif #components > 1 then
+        for _, comp in pairs(components) do
+            self:GetComponents( comp, finalList )
+        end
+    end
+end
+--]]
+
 function InventoryHelper:HealthConsumables( hHero )
     local health = 0
     for i = 0, 5 do

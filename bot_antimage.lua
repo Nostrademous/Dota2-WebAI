@@ -18,6 +18,6 @@ local amBot = botAM:new{}
 
 function Think()
     local hBot = GetBot()
-
+    
     amBot:Think( hBot )
 end

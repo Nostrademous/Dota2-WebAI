@@ -84,7 +84,7 @@ class World(object):
         self.reply = {}
         self.reply["Type"] = pID
         self.reply["Time"] = time
-        if len(reply) > 0:
+        if reply != None and len(reply) > 0:
             print('Have Data: ', reply)
             self.reply["Data"] = reply
     

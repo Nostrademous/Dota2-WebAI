@@ -12,6 +12,8 @@ require( GetScriptDirectory().."/constants/shops" )
 require( GetScriptDirectory().."/constants/fountains" )
 require( GetScriptDirectory().."/constants/jungle" )
 
+local item_map = require( GetScriptDirectory().."/constants/item_mappings" )
+
 --- LOAD OUR HELPERS
 require( GetScriptDirectory().."/helper/global_helper" )
 
@@ -165,8 +167,12 @@ local function ServerUpdate()
         dbg.myPrint("Packet RTT: ", RealTime() - botReply.Time)
         if botReply.Data then
             if botReply.Data.StartItems then
-                hBot.mybot.sNextItem = botReply.Data.StartItems
+                if hBot.mybot.sNextItem == nil then
+                    hBot.mybot.sNextItem = botReply.Data.StartItems
+                end
             end
+            
+            
         end
     end
 
@@ -239,8 +245,11 @@ end
 function X:Atomic_BuyItems(hBot)
     if hBot.mybot.sNextItem == nil then return end
     
-    while #hBot.mybot.sNextItem > 0 do
-        sNextItem = "item_" .. hBot.mybot.sNextItem[1]
+    for i = 1, #hBot.mybot.sNextItem do
+        --dbg.myPrint(hBot.mybot.sNextItem[1])
+        sNextItem = item_map[hBot.mybot.sNextItem[1]]
+        --dbg.myPrint('Maps to: ', sNextItem)
+        
         if hBot:GetGold() >= GetItemCost(sNextItem) then
             local secret = IsItemPurchasedFromSecretShop(sNextItem)
             local side = IsItemPurchasedFromSideShop(sNextItem)
@@ -265,7 +274,7 @@ function X:Atomic_BuyItems(hBot)
                     if buyRet == 0 then
                         table.remove(hBot.mybot.sNextItem, 1)
                     end
-                    return
+                    break
                 end
             end
         end
