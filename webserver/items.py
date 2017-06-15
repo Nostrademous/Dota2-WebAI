@@ -36,7 +36,7 @@ class ItemKB():
                 itemSets =  statBlock.xpath('.//div[@class="kv r-none-mobile"]')
 
                 #starting items are in first itemset slot
-                startingItems = [ href.split('/')[-1].replace('-','_') for href in itemSets[0].xpath('.//a/@href')]
+                startingItems = [ href.split('/')[-1] for href in itemSets[0].xpath('.//a/@href')]
 
                 return startingItems
 
