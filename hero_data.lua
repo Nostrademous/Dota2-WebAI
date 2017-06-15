@@ -32,7 +32,7 @@ X.windrunner.LaneInfo.RequiresFarm = 1
 
 X.dark_seer = {}
 X.dark_seer.Type = "DOTA_BOT_PURE_SUPPORT"
-X.dark_seer.Name = "Dark_Seer"
+X.dark_seer.Name = "Dark-Seer"
 X.dark_seer.SKILL_0 = "dark_seer_vacuum"
 X.dark_seer.SKILL_1 = "dark_seer_ion_shell"
 X.dark_seer.SKILL_2 = "dark_seer_surge"
@@ -61,7 +61,7 @@ X.dark_seer.LaneInfo.RequiresFarm = 1
 
 X.vengefulspirit = {}
 X.vengefulspirit.Type = "DOTA_BOT_GANKER | DOTA_BOT_STUN_SUPPORT"
-X.vengefulspirit.Name = "Vengeful_Spirit"
+X.vengefulspirit.Name = "Vengeful-Spirit"
 X.vengefulspirit.SKILL_0 = "vengefulspirit_magic_missile"
 X.vengefulspirit.SKILL_1 = "vengefulspirit_wave_of_terror"
 X.vengefulspirit.SKILL_2 = "vengefulspirit_command_aura"
@@ -91,7 +91,7 @@ X.vengefulspirit.LaneInfo.RequiresFarm = 0
 
 X.night_stalker = {}
 X.night_stalker.Type = "DOTA_BOT_TANK | DOTA_BOT_SEMI_CARRY | DOTA_BOT_GANKER"
-X.night_stalker.Name = "Night_Stalker"
+X.night_stalker.Name = "Night-Stalker"
 X.night_stalker.SKILL_0 = "night_stalker_void"
 X.night_stalker.SKILL_1 = "night_stalker_crippling_fear"
 X.night_stalker.SKILL_2 = "night_stalker_hunter_in_the_night"
@@ -206,7 +206,7 @@ X.riki.LaneInfo.RequiresFarm = 2
 
 X.storm_spirit = {}
 X.storm_spirit.Type = "DOTA_BOT_GANKER | DOTA_BOT_SEMI_CARRY"
-X.storm_spirit.Name = "Storm_Spirit"
+X.storm_spirit.Name = "Storm-Spirit"
 X.storm_spirit.SKILL_0 = "storm_spirit_static_remnant"
 X.storm_spirit.SKILL_1 = "storm_spirit_electric_vortex"
 X.storm_spirit.SKILL_2 = "storm_spirit_overload"
@@ -320,7 +320,7 @@ X.pugna.LaneInfo.RequiresFarm = 1
 
 X.ogre_magi = {}
 X.ogre_magi.Type = "DOTA_BOT_STUN_SUPPORT | DOTA_BOT_GANKER"
-X.ogre_magi.Name = "Ogre_Magi"
+X.ogre_magi.Name = "Ogre-Magi"
 X.ogre_magi.SKILL_0 = "ogre_magi_fireblast"
 X.ogre_magi.SKILL_1 = "ogre_magi_ignite"
 X.ogre_magi.SKILL_2 = "ogre_magi_bloodlust"
@@ -380,7 +380,7 @@ X.jakiro.LaneInfo.RequiresFarm = 1
 
 X.crystal_maiden = {}
 X.crystal_maiden.Type = "DOTA_BOT_PURE_SUPPORT"
-X.crystal_maiden.Name = "Crystal_Maiden"
+X.crystal_maiden.Name = "Crystal-Maiden"
 X.crystal_maiden.SKILL_0 = "crystal_maiden_crystal_nova"
 X.crystal_maiden.SKILL_1 = "crystal_maiden_frostbite"
 X.crystal_maiden.SKILL_2 = "crystal_maiden_brilliance_aura"
@@ -409,7 +409,7 @@ X.crystal_maiden.LaneInfo.RequiresFarm = 1
 
 X.ancient_apparition = {}
 X.ancient_apparition.Type = "DOTA_BOT_PURE_SUPPORT"
-X.ancient_apparition.Name = "Ancient_Apparition"
+X.ancient_apparition.Name = "Ancient-Apparition"
 X.ancient_apparition.SKILL_0 = "ancient_apparition_cold_feet"
 X.ancient_apparition.SKILL_1 = "ancient_apparition_ice_vortex"
 X.ancient_apparition.SKILL_2 = "ancient_apparition_chilling_touch"
@@ -438,7 +438,7 @@ X.ancient_apparition.LaneInfo.RequiresFarm = 1
 
 X.lone_druid = {}
 X.lone_druid.Type = "DOTA_BOT_TANK | DOTA_BOT_SEMI_CARRY"
-X.lone_druid.Name = "Lone_Druid"
+X.lone_druid.Name = "Lone-Druid"
 X.lone_druid.SKILL_0 = "lone_druid_spirit_bear"
 X.lone_druid.SKILL_1 = "lone_druid_rabid"
 X.lone_druid.SKILL_2 = "lone_druid_savage_roar"
@@ -469,7 +469,7 @@ X.lone_druid.LaneInfo.RequiresFarm = 2
 
 X.shadow_demon = {}
 X.shadow_demon.Type = "DOTA_BOT_STUN_SUPPORT | DOTA_BOT_GANKER"
-X.shadow_demon.Name = "Shadow_Demon"
+X.shadow_demon.Name = "Shadow-Demon"
 X.shadow_demon.SKILL_0 = "shadow_demon_disruption"
 X.shadow_demon.SKILL_1 = "shadow_demon_soul_catcher"
 X.shadow_demon.SKILL_2 = "shadow_demon_shadow_poison"
@@ -587,7 +587,7 @@ X.kunkka.LaneInfo.RequiresFarm = 1
 
 X.phantom_lancer = {}
 X.phantom_lancer.Type = "DOTA_BOT_PUSH_SUPPORT | DOTA_BOT_HARD_CARRY"
-X.phantom_lancer.Name = "Phantom_Lancer"
+X.phantom_lancer.Name = "Phantom-Lancer"
 X.phantom_lancer.SKILL_0 = "phantom_lancer_spirit_lance"
 X.phantom_lancer.SKILL_1 = "phantom_lancer_doppelwalk"
 X.phantom_lancer.SKILL_2 = "phantom_lancer_phantom_edge"
@@ -920,7 +920,7 @@ X.juggernaut.LaneInfo.RequiresFarm = 2
 
 X.templar_assassin = {}
 X.templar_assassin.Type = "DOTA_BOT_HARD_CARRY"
-X.templar_assassin.Name = "Templar_Assassin"
+X.templar_assassin.Name = "Templar-Assassin"
 X.templar_assassin.SKILL_0 = "templar_assassin_refraction"
 X.templar_assassin.SKILL_1 = "templar_assassin_meld"
 X.templar_assassin.SKILL_2 = "templar_assassin_psi_blades"
@@ -1038,7 +1038,7 @@ X.meepo.LaneInfo.RequiresFarm = 0
 
 X.elder_titan = {}
 X.elder_titan.Type = "DOTA_BOT_GANKER | DOTA_BOT_TANK"
-X.elder_titan.Name = "Elder_Titan"
+X.elder_titan.Name = "Elder-Titan"
 X.elder_titan.SKILL_0 = "elder_titan_echo_stomp"
 X.elder_titan.SKILL_1 = "elder_titan_ancestral_spirit"
 X.elder_titan.SKILL_2 = "elder_titan_natural_order"
@@ -1068,7 +1068,7 @@ X.elder_titan.LaneInfo.RequiresFarm = 0
 
 X.centaur = {}
 X.centaur.Type = "DOTA_BOT_SEMI_CARRY | DOTA_BOT_TANK"
-X.centaur.Name = "Centaur_Warrunner"
+X.centaur.Name = "Centaur-Warrunner"
 X.centaur.SKILL_0 = "centaur_hoof_stomp"
 X.centaur.SKILL_1 = "centaur_double_edge"
 X.centaur.SKILL_2 = "centaur_return"
@@ -1155,7 +1155,7 @@ X.broodmother.LaneInfo.RequiresFarm = 2
 
 X.dragon_knight = {}
 X.dragon_knight.Type = "DOTA_BOT_TANK | DOTA_BOT_SEMI_CARRY | DOTA_BOT_STUN_SUPPORT"
-X.dragon_knight.Name = "Dragon_Knight"
+X.dragon_knight.Name = "Dragon-Knight"
 X.dragon_knight.SKILL_0 = "dragon_knight_breathe_fire"
 X.dragon_knight.SKILL_1 = "dragon_knight_dragon_tail"
 X.dragon_knight.SKILL_2 = "dragon_knight_dragon_blood"
@@ -1275,7 +1275,7 @@ X.techies.LaneInfo.RequiresFarm = 0
 
 X.phantom_assassin = {}
 X.phantom_assassin.Type = "DOTA_BOT_HARD_CARRY"
-X.phantom_assassin.Name = "Phantom_Assassin"
+X.phantom_assassin.Name = "Phantom-Assassin"
 X.phantom_assassin.SKILL_0 = "phantom_assassin_stifling_dagger"
 X.phantom_assassin.SKILL_1 = "phantom_assassin_phantom_strike"
 X.phantom_assassin.SKILL_2 = "phantom_assassin_blur"
@@ -1483,7 +1483,7 @@ X.mirana.LaneInfo.RequiresFarm = 2
 
 X.skeleton_king = {}
 X.skeleton_king.Type = "DOTA_BOT_TANK | DOTA_BOT_SEMI_CARRY"
-X.skeleton_king.Name = "Wraith_King"
+X.skeleton_king.Name = "Wraith-King"
 X.skeleton_king.SKILL_0 = "skeleton_king_hellfire_blast"
 X.skeleton_king.SKILL_1 = "skeleton_king_vampiric_aura"
 X.skeleton_king.SKILL_2 = "skeleton_king_mortal_strike"
@@ -1543,7 +1543,7 @@ X.puck.LaneInfo.RequiresFarm = 1
 
 X.arc_warden = {}
 X.arc_warden.Type = "DOTA_BOT_HARD_CARRY"
-X.arc_warden.Name = "Arc_Warden"
+X.arc_warden.Name = "Arc-Warden"
 X.arc_warden.SKILL_0 = "arc_warden_flux"
 X.arc_warden.SKILL_1 = "arc_warden_magnetic_field"
 X.arc_warden.SKILL_2 = "arc_warden_spark_wraith"
@@ -1633,7 +1633,7 @@ X.luna.LaneInfo.RequiresFarm = 2
 
 X.queenofpain = {}
 X.queenofpain.Type = "DOTA_BOT_GANKER | DOTA_BOT_SEMI_CARRY"
-X.queenofpain.Name = "Queen_of_Pain"
+X.queenofpain.Name = "Queen-of-Pain"
 X.queenofpain.SKILL_0 = "queenofpain_shadow_strike"
 X.queenofpain.SKILL_1 = "queenofpain_blink"
 X.queenofpain.SKILL_2 = "queenofpain_scream_of_pain"
@@ -1690,7 +1690,7 @@ X.razor.LaneInfo.RequiresFarm = 2
 
 X.drow_ranger = {}
 X.drow_ranger.Type = "DOTA_BOT_HARD_CARRY"
-X.drow_ranger.Name = "Drow_Ranger"
+X.drow_ranger.Name = "Drow-Ranger"
 X.drow_ranger.SKILL_0 = "drow_ranger_frost_arrows"
 X.drow_ranger.SKILL_1 = "drow_ranger_wave_of_silence"
 X.drow_ranger.SKILL_2 = "drow_ranger_trueshot"
@@ -1747,7 +1747,7 @@ X.necrolyte.LaneInfo.RequiresFarm = 1
 
 X.skywrath_mage = {}
 X.skywrath_mage.Type = "DOTA_BOT_GANKER | DOTA_BOT_NUKER"
-X.skywrath_mage.Name = "Skywrath_Mage"
+X.skywrath_mage.Name = "Skywrath-Mage"
 X.skywrath_mage.SKILL_0 = "skywrath_mage_arcane_bolt"
 X.skywrath_mage.SKILL_1 = "skywrath_mage_concussive_shot"
 X.skywrath_mage.SKILL_2 = "skywrath_mage_ancient_seal"
@@ -1894,7 +1894,7 @@ X.warlock.LaneInfo.RequiresFarm = 1
 
 X.witch_doctor = {}
 X.witch_doctor.Type = "DOTA_BOT_GANKER | DOTA_BOT_STUN_SUPPORT"
-X.witch_doctor.Name = "Witch_Doctor"
+X.witch_doctor.Name = "Witch-Doctor"
 X.witch_doctor.SKILL_0 = "witch_doctor_paralyzing_cask"
 X.witch_doctor.SKILL_1 = "witch_doctor_voodoo_restoration"
 X.witch_doctor.SKILL_2 = "witch_doctor_maledict"
@@ -1922,7 +1922,7 @@ X.witch_doctor.LaneInfo.RequiresFarm = 1
 
 X.nyx_assassin = {}
 X.nyx_assassin.Type = "DOTA_BOT_GANKER | DOTA_BOT_NUKER"
-X.nyx_assassin.Name = "Nyx_Assassin"
+X.nyx_assassin.Name = "Nyx-Assassin"
 X.nyx_assassin.SKILL_0 = "nyx_assassin_impale"
 X.nyx_assassin.SKILL_1 = "nyx_assassin_mana_burn"
 X.nyx_assassin.SKILL_2 = "nyx_assassin_spiked_carapace"
@@ -2040,7 +2040,7 @@ X.enigma.LaneInfo.RequiresFarm = 1
 
 X.bounty_hunter = {}
 X.bounty_hunter.Type = "DOTA_BOT_SEMI_CARRY | DOTA_BOT_GANKER"
-X.bounty_hunter.Name = "Bounty_Hunter"
+X.bounty_hunter.Name = "Bounty-Hunter"
 X.bounty_hunter.SKILL_0 = "bounty_hunter_shuriken_toss"
 X.bounty_hunter.SKILL_1 = "bounty_hunter_jinada"
 X.bounty_hunter.SKILL_2 = "bounty_hunter_wind_walk"
@@ -2124,7 +2124,7 @@ X.antimage.LaneInfo.RequiresFarm = 2
 
 X.sand_king = {}
 X.sand_king.Type = "DOTA_BOT_GANKER | DOTA_BOT_STUN_SUPPORT"
-X.sand_king.Name = "Sand_King"
+X.sand_king.Name = "Sand-King"
 X.sand_king.SKILL_0 = "sandking_burrowstrike"
 X.sand_king.SKILL_1 = "sandking_sand_storm"
 X.sand_king.SKILL_2 = "sandking_caustic_finale"
@@ -2215,7 +2215,7 @@ X.wisp.LaneInfo.RequiresFarm = 1
 
 X.nevermore = {}
 X.nevermore.Type = "DOTA_BOT_HARD_CARRY"
-X.nevermore.Name = "Shadow_Fiend"
+X.nevermore.Name = "Shadow-Fiend"
 X.nevermore.SKILL_0 = "nevermore_shadowraze1"
 X.nevermore.SKILL_1 = "nevermore_shadowraze2"
 X.nevermore.SKILL_2 = "nevermore_shadowraze3"
@@ -2244,7 +2244,7 @@ X.nevermore.LaneInfo.RequiresFarm = 2
 
 X.faceless_void = {}
 X.faceless_void.Type = "DOTA_BOT_HARD_CARRY"
-X.faceless_void.Name = "Faceless_Void"
+X.faceless_void.Name = "Faceless-Void"
 X.faceless_void.SKILL_0 = "faceless_void_time_walk"
 X.faceless_void.SKILL_1 = "faceless_void_time_dilation"
 X.faceless_void.SKILL_2 = "faceless_void_time_lock"
@@ -2330,7 +2330,7 @@ X.lich.LaneInfo.RequiresFarm = 0
 
 X.spirit_breaker = {}
 X.spirit_breaker.Type = "DOTA_BOT_GANKER | DOTA_BOT_SEMI_CARRY"
-X.spirit_breaker.Name = "Spirit_Breaker"
+X.spirit_breaker.Name = "Spirit-Breaker"
 X.spirit_breaker.SKILL_0 = "spirit_breaker_charge_of_darkness"
 X.spirit_breaker.SKILL_1 = "spirit_breaker_empowering_haste"
 X.spirit_breaker.SKILL_2 = "spirit_breaker_greater_bash"
@@ -2360,7 +2360,7 @@ X.spirit_breaker.LaneInfo.RequiresFarm = 2
 
 X.monkey_king = {}
 X.monkey_king.Type = "DOTA_BOT_SEMI_CARRY | DOTA_BOT_GANKER"
-X.monkey_king.Name = "Monkey_King"
+X.monkey_king.Name = "Monkey-King"
 X.monkey_king.SKILL_0 = "monkey_king_boundless_strike"
 X.monkey_king.SKILL_1 = "monkey_king_tree_dance"
 X.monkey_king.SKILL_2 = "monkey_king_primal_spring"
@@ -2423,7 +2423,7 @@ X.visage.LaneInfo.RequiresFarm = 1
 
 X.keeper_of_the_light = {}
 X.keeper_of_the_light.Type = "DOTA_BOT_PUSH_SUPPORT | DOTA_BOT_PURE_SUPPORT"
-X.keeper_of_the_light.Name = "Keeper_of_the_Light"
+X.keeper_of_the_light.Name = "Keeper-of-the-Light"
 X.keeper_of_the_light.SKILL_0 = "keeper_of_the_light_illuminate"
 X.keeper_of_the_light.SKILL_1 = "keeper_of_the_light_mana_leak"
 X.keeper_of_the_light.SKILL_2 = "keeper_of_the_light_chakra_magic"
@@ -2457,7 +2457,7 @@ X.keeper_of_the_light.LaneInfo.RequiresFarm = 1
 
 X.legion_commander = {}
 X.legion_commander.Type = "DOTA_BOT_TANK | DOTA_BOT_GANKER | DOTA_BOT_SEMI_CARRY"
-X.legion_commander.Name = "Legion_Commander"
+X.legion_commander.Name = "Legion-Commander"
 X.legion_commander.SKILL_0 = "legion_commander_overwhelming_odds"
 X.legion_commander.SKILL_1 = "legion_commander_press_the_attack"
 X.legion_commander.SKILL_2 = "legion_commander_moment_of_courage"
@@ -2517,7 +2517,7 @@ X.slardar.LaneInfo.RequiresFarm = 2
 
 X.treant = {}
 X.treant.Type = "DOTA_BOT_TANK | DOTA_BOT_PURE_SUPPORT"
-X.treant.Name = "Treant_Protector"
+X.treant.Name = "Treant-Protector"
 X.treant.SKILL_0 = "treant_natures_guise"
 X.treant.SKILL_1 = "treant_leech_seed"
 X.treant.SKILL_2 = "treant_living_armor"
@@ -2548,7 +2548,7 @@ X.treant.LaneInfo.RequiresFarm = 0
 
 X.death_prophet = {}
 X.death_prophet.Type = "DOTA_BOT_PUSH_SUPPORT"
-X.death_prophet.Name = "Death_Prophet"
+X.death_prophet.Name = "Death-Prophet"
 X.death_prophet.SKILL_0 = "death_prophet_carrion_swarm"
 X.death_prophet.SKILL_1 = "death_prophet_silence"
 X.death_prophet.SKILL_2 = "death_prophet_spirit_siphon"
@@ -2577,7 +2577,7 @@ X.death_prophet.LaneInfo.RequiresFarm = 2
 
 X.winter_wyvern = {}
 X.winter_wyvern.Type = "DOTA_BOT_PURE_SUPPORT"
-X.winter_wyvern.Name = "Winter_Wyvern"
+X.winter_wyvern.Name = "Winter-Wyvern"
 X.winter_wyvern.SKILL_0 = "winter_wyvern_arctic_burn"
 X.winter_wyvern.SKILL_1 = "winter_wyvern_splinter_blast"
 X.winter_wyvern.SKILL_2 = "winter_wyvern_cold_embrace"
@@ -2634,7 +2634,7 @@ X.tidehunter.LaneInfo.RequiresFarm = 0
 
 X.earth_spirit = {}
 X.earth_spirit.Type = "DOTA_BOT_GANKER"
-X.earth_spirit.Name = "Earth_Spirit"
+X.earth_spirit.Name = "Earth-Spirit"
 X.earth_spirit.SKILL_0 = "earth_spirit_boulder_smash"
 X.earth_spirit.SKILL_1 = "earth_spirit_rolling_boulder"
 X.earth_spirit.SKILL_2 = "earth_spirit_geomagnetic_grip"
@@ -2666,7 +2666,7 @@ X.earth_spirit.LaneInfo.RequiresFarm = 0
 
 X.furion = {}
 X.furion.Type = "DOTA_BOT_PUSH_SUPPORT | DOTA_BOT_SEMI_CARRY | DOTA_BOT_GANKER"
-X.furion.Name = "Natures_Prophet"
+X.furion.Name = "Natures-Prophet"
 X.furion.SKILL_0 = "furion_sprout"
 X.furion.SKILL_1 = "furion_teleportation"
 X.furion.SKILL_2 = "furion_force_of_nature"
@@ -2788,7 +2788,7 @@ X.dazzle.LaneInfo.RequiresFarm = 0
 
 X.troll_warlord = {}
 X.troll_warlord.Type = "DOTA_BOT_HARD_CARRY"
-X.troll_warlord.Name = "Troll_Warlord"
+X.troll_warlord.Name = "Troll-Warlord"
 X.troll_warlord.SKILL_0 = "troll_warlord_berserkers_rage"
 X.troll_warlord.SKILL_1 = "troll_warlord_whirling_axes_ranged"
 X.troll_warlord.SKILL_2 = "troll_warlord_whirling_axes_melee"
@@ -2818,7 +2818,7 @@ X.troll_warlord.LaneInfo.RequiresFarm = 2
 
 X.chaos_knight = {}
 X.chaos_knight.Type = "DOTA_BOT_SEMI_CARRY | DOTA_BOT_GANKER | DOTA_BOT_TANK"
-X.chaos_knight.Name = "Chaos_Knight"
+X.chaos_knight.Name = "Chaos-Knight"
 X.chaos_knight.SKILL_0 = "chaos_knight_chaos_bolt"
 X.chaos_knight.SKILL_1 = "chaos_knight_reality_rift"
 X.chaos_knight.SKILL_2 = "chaos_knight_chaos_strike"
@@ -2848,7 +2848,7 @@ X.chaos_knight.LaneInfo.RequiresFarm = 2
 
 X.shadow_shaman = {}
 X.shadow_shaman.Type = "DOTA_BOT_STUN_SUPPORT | DOTA_BOT_PUSH_SUPPORT"
-X.shadow_shaman.Name = "Shadow_Shaman"
+X.shadow_shaman.Name = "Shadow-Shaman"
 X.shadow_shaman.SKILL_0 = "shadow_shaman_ether_shock"
 X.shadow_shaman.SKILL_1 = "shadow_shaman_voodoo"
 X.shadow_shaman.SKILL_2 = "shadow_shaman_shackles"
@@ -3116,7 +3116,7 @@ X.bane.LaneInfo.RequiresFarm = 1
 
 X.ember_spirit = {}
 X.ember_spirit.Type = "DOTA_BOT_HARD_CARRY"
-X.ember_spirit.Name = "Ember_Spirit"
+X.ember_spirit.Name = "Ember-Spirit"
 X.ember_spirit.SKILL_0 = "ember_spirit_searing_chains"
 X.ember_spirit.SKILL_1 = "ember_spirit_sleight_of_fist"
 X.ember_spirit.SKILL_2 = "ember_spirit_flame_guard"
@@ -3176,7 +3176,7 @@ X.viper.LaneInfo.RequiresFarm = 2
 
 X.naga_siren = {}
 X.naga_siren.Type = "DOTA_BOT_GANKER | DOTA_BOT_SEMI_CARRY"
-X.naga_siren.Name = "Naga_Siren"
+X.naga_siren.Name = "Naga-Siren"
 X.naga_siren.SKILL_0 = "naga_siren_mirror_image"
 X.naga_siren.SKILL_1 = "naga_siren_ensnare"
 X.naga_siren.SKILL_2 = "naga_siren_rip_tide"
@@ -3324,7 +3324,7 @@ X.magnataur.LaneInfo.RequiresFarm = 1
 
 X.obsidian_destroyer = {}
 X.obsidian_destroyer.Type = "DOTA_BOT_HARD_CARRY"
-X.obsidian_destroyer.Name = "Outworld_Devourer"
+X.obsidian_destroyer.Name = "Outworld-Devourer"
 X.obsidian_destroyer.SKILL_0 = "obsidian_destroyer_arcane_orb"
 X.obsidian_destroyer.SKILL_1 = "obsidian_destroyer_astral_imprisonment"
 X.obsidian_destroyer.SKILL_2 = "obsidian_destroyer_essence_aura"

@@ -109,7 +109,7 @@ if __name__ == "__main__":
             if line[1:4] == 'url':
                 try:
                     key, val = line.split()
-                    heroes[heroName]['Name'] = val.strip('"')
+                    heroes[heroName]['Name'] = val.strip('"').replace("_", "-")
                 except ValueError as e:
                     print 'Error: ', line
                     break
