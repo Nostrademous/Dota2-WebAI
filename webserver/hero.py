@@ -51,7 +51,8 @@ class Hero(Unit):
         
     def pickAbility(self):
         # TODO - Fill Me Out
-        return 
+        level_abs = None # <-- fill this with scraped info
+        self.jsonReply['LevelAbs'] = level_abs
         
     def needsStartingItems(self):
         return len(self.items) == 0
@@ -59,7 +60,6 @@ class Hero(Unit):
     def sendStartingItems(self):
         itemkb = ItemKB()
         start_items = itemkb.getStartingItems(self.name, "Safe Lane")
-        
         self.jsonReply['StartItems'] = start_items
         
     def processHero(self):

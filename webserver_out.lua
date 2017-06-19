@@ -524,6 +524,15 @@ function webserver.CreateWorldUpdate()
     
     json.Type = packet.TYPE_WORLD
     json.Time = RealTime()
+    json.DotaTime = DotaTime()
+
+    -- report Lane Front info for both teams
+    json.RTopFront = GetFront(TEAM_RADIANT, LANE_TOP)
+    json.RMidFront = GetFront(TEAM_RADIANT, LANE_MID)
+    json.RBotFront = GetFront(TEAM_RADIANT, LANE_BOT)
+    json.DTopFront = GetFront(TEAM_DIRE, LANE_TOP)
+    json.DMidFront = GetFront(TEAM_DIRE, LANE_MID)
+    json.DBotFront = GetFront(TEAM_DIRE, LANE_BOT)
     
     json.CourierData    = dumpCourierInfo()
     json.AlliedHeroes   = dumpAlliedHeroes()

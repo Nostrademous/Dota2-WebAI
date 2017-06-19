@@ -172,7 +172,11 @@ local function ServerUpdate()
                 end
             end
             
-            
+            if botReply.Data.LevelAbs then
+                if hBot.mybot.sNextAbility = nil then
+                    hBot.mybot.sNextAbility = botReply.Data.LevelAbs
+                end
+            end
         end
     end
 
@@ -232,12 +236,16 @@ function X:Atomic_LearnAbilities(hBot)
     
     local nAbilityPoints = hBot:GetAbilityPoints()
     if nAbilityPoints > 0 then
-        local hAbility = hBot:GetAbilityByName(hBot.mybot.sNextAbility)
-        if hAbility and hAbility:CanAbilityBeUpgraded() then
-            hBot:ActionImmediate_LevelAbility(hBot.mybot.sNextAbility)
-            hBot.mybot.sNextAbility = nil
-        else
-            dbg.pause("Trying to level an ability I cannot", hBot.mybot.sNextAbility)
+        for i = 1, #hBot.mybot.sNextAbility do
+            local sNextAb = hBot.mybot.sNextAbility[1]
+            local hAbility = hBot:GetAbilityByName(sNextAb)
+            if hAbility and hAbility:CanAbilityBeUpgraded() then
+                hBot:ActionImmediate_LevelAbility(sNextAb)
+                table.remove(hBot.mybot.sNextAbility, 1)
+                break
+            else
+                dbg.pause("Trying to level an ability I cannot", hBot.mybot.sNextAbility)
+            end
         end
     end
 end
