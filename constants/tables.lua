@@ -26,3 +26,18 @@ tableItemPurchaseResults = {
 	PURCHASE_ITEM_NOT_AT_SECRET_SHOP	    = 62,
 	PURCHASE_ITEM_INVALID_ITEM_NAME		    = 33
 }
+
+tableShops = {}
+	SHOP_HOME_RADIANT	= 0,
+	SHOP_SIDE_RADIANT	= 1,
+	SHOP_SECRET_RADIANT	= 2,
+	SHOP_HOME_DIRE		= 3,
+	SHOP_SIDE_DIRE 		= 4,
+	SHOP_SECRET_DIRE 	= 5
+}
+
+tableShopTypes = {
+	SHOP_HOME 	= 0,
+	SHOP_SIDE	= 1,
+	SHOP_SECRET = 2
+}
