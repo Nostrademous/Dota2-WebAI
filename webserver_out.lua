@@ -16,6 +16,7 @@ local webserverAuthTried = false
 webserver.startTime         = -1000.0
 webserver.lastWorldUpdate   = -1000.0
 webserver.lastEnemiesUpdate = -1000.0
+webserver.lastAlliesUpdate  = -1000.0
 webserver.lastReply         = nil
 
 local function dumpHeroInfo( hHero )
@@ -24,6 +25,8 @@ local function dumpHeroInfo( hHero )
     
     if hHero.mybot then
         data.Name   = heroData[hHero.mybot.Name].Name:lower()
+        data.NextItems  = hHero.mybot.sNextItem
+        data.NextAbs    = hHero.mybot.sNextAbility
     else
         data.Name   = heroData[GetUnitName(hHero)].Name:lower()
     end
@@ -507,6 +510,16 @@ function webserver.SendData(hBot)
             dbg.myPrint("Sending Player Update: ", tostring(jsonData))
             webserver.SendPacket(jsonData)
         end
+
+        -- check if we need to send an Enemies Update Packet
+        if packet.LastPacket[packet.TYPE_ALLIES] == nil or (packet.LastPacket[packet.TYPE_ALLIES].processed
+            and (GameTime() - webserver.lastAlliesUpdate) > 0.5) then
+            local jsonData = webserver.CreateAlliesUpdate()
+            packet:CreatePacket(packet.TYPE_ALLIES, jsonData)
+            webserver.lastAlliesUpdate = GameTime()
+            dbg.myPrint("Sending Allies Update: ", tostring(jsonData))
+            webserver.SendPacket(jsonData)
+        end
     end
 end
 
@@ -526,19 +539,17 @@ function webserver.CreateWorldUpdate()
     json.Time = RealTime()
     json.DotaTime = DotaTime()
 
-    -- report Lane Front info for both teams
-    json.RTopFront = GetFront(TEAM_RADIANT, LANE_TOP)
-    json.RMidFront = GetFront(TEAM_RADIANT, LANE_MID)
-    json.RBotFront = GetFront(TEAM_RADIANT, LANE_BOT)
-    json.DTopFront = GetFront(TEAM_DIRE, LANE_TOP)
-    json.DMidFront = GetFront(TEAM_DIRE, LANE_MID)
-    json.DBotFront = GetFront(TEAM_DIRE, LANE_BOT)
+    -- report Lane Front info for both teams (does not ignore towers)
+    json.RTopFront = GetLaneFrontAmount(TEAM_RADIANT, LANE_TOP, false)
+    json.RMidFront = GetLaneFrontAmount(TEAM_RADIANT, LANE_MID, false)
+    json.RBotFront = GetLaneFrontAmount(TEAM_RADIANT, LANE_BOT, false)
+    json.DTopFront = GetLaneFrontAmount(TEAM_DIRE, LANE_TOP, false)
+    json.DMidFront = GetLaneFrontAmount(TEAM_DIRE, LANE_MID, false)
+    json.DBotFront = GetLaneFrontAmount(TEAM_DIRE, LANE_BOT, false)
     
     json.CourierData    = dumpCourierInfo()
-    json.AlliedHeroes   = dumpAlliedHeroes()
     
     --[[
-    json = json..", "..dumpEnemyHeroes()
     json = json..", "..dumpAlliedHeroesOther()
     json = json..", "..dumpEnemyHeroesOther()
     json = json..", "..dumpAlliedCreep()
@@ -574,6 +585,18 @@ function webserver.CreateEnemiesUpdate()
     
     json.Data = dumpEnemyHeroes()
     
+    return dkjson.encode(json)
+end
+
+function webserver.CreateAlliesUpdate()
+    local json = {}
+
+    json.Type = packet.TYPE_ALLIES
+    json.Time = RealTime()
+    json.DotaTime = DotaTime()
+
+    json.AlliedHeroes   = dumpAlliedHeroes()
+
     return dkjson.encode(json)
 end
 

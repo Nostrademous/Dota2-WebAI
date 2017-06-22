@@ -13,6 +13,7 @@ DataPacket.TYPE_AUTH    = "X"
 DataPacket.TYPE_WORLD   = "W"
 DataPacket.TYPE_PLAYER  = "P"
 DataPacket.TYPE_ENEMIES = "E"
+DataPacket.TYPE_ALLIES  = "A"
 
 function DataPacket:CreatePacket(key, packet)
     --local seq = Round(RealTime(), 3) * 1000

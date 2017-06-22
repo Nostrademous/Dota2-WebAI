@@ -27,7 +27,7 @@ tableItemPurchaseResults = {
 	PURCHASE_ITEM_INVALID_ITEM_NAME		    = 33
 }
 
-tableShops = {}
+tableShops = {
 	SHOP_HOME_RADIANT	= 0,
 	SHOP_SIDE_RADIANT	= 1,
 	SHOP_SECRET_RADIANT	= 2,

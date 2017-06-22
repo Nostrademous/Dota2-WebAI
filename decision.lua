@@ -104,8 +104,8 @@ function X:DoInit(hBot)
     self.Init = true
     hBot.mybot = self
     
-    self.sNextAbility       = nil
-    self.sNextItem          = nil
+    self.sNextAbility       = {}
+    self.sNextItem          = {}
     self.lastModeThink      = -1000.0
     
     self.moving_location    = nil
@@ -167,13 +167,13 @@ local function ServerUpdate()
         dbg.myPrint("Packet RTT: ", RealTime() - botReply.Time)
         if botReply.Data then
             if botReply.Data.StartItems then
-                if hBot.mybot.sNextItem == nil then
+                if #hBot.mybot.sNextItem == 0 then
                     hBot.mybot.sNextItem = botReply.Data.StartItems
                 end
             end
             
             if botReply.Data.LevelAbs then
-                if hBot.mybot.sNextAbility = nil then
+                if #hBot.mybot.sNextAbility == 0 then
                     hBot.mybot.sNextAbility = botReply.Data.LevelAbs
                 end
             end
@@ -232,7 +232,7 @@ function X:ExecuteAtomicOperations(hBot)
 end
 
 function X:Atomic_LearnAbilities(hBot)
-    if hBot.mybot.sNextAbility == nil then return end
+    if #hBot.mybot.sNextAbility == 0 then return end
     
     local nAbilityPoints = hBot:GetAbilityPoints()
     if nAbilityPoints > 0 then
@@ -251,13 +251,23 @@ function X:Atomic_LearnAbilities(hBot)
 end
 
 function X:Atomic_BuyItems(hBot)
-    if hBot.mybot.sNextItem == nil then return end
+    if #hBot.mybot.sNextItem == 0 then return end
+    
+    local sComps = {}
+    
+    dbg.pause("")
     
     for i = 1, #hBot.mybot.sNextItem do
         --dbg.myPrint(hBot.mybot.sNextItem[1])
-        sNextItem = item_map[hBot.mybot.sNextItem[1]]
+        TableConcat(sComps, InvHelp:GetComponents(item_map[hBot.mybot.sNextItem[1]]))
         --dbg.myPrint('Maps to: ', sNextItem)
-        
+    end
+    
+    hBot.mybot.sNextItem = sComps
+    
+    for j = 1, #sComps do
+        local sNextItem = sComps[j]
+    
         if hBot:GetGold() >= GetItemCost(sNextItem) then
             local secret = IsItemPurchasedFromSecretShop(sNextItem)
             local side = IsItemPurchasedFromSideShop(sNextItem)

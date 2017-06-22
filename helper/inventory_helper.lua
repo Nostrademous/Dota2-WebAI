@@ -120,19 +120,48 @@ function InventoryHelper:BuyItem( hUnit, sItemName )
     return 0
 end
 
---[[
-function InventoryHelper:GetComponents( sItemName, finalList )
-    local components = GetItemComponents(sItemName)
+function InventoryHelper:GetComponents( sItemName )
+    local variants = GetItemComponents(sItemName)
     
-    if #components == 1 then
-        table.insert(finalList, components[1])
-    elseif #components > 1 then
-        for _, comp in pairs(components) do
-            self:GetComponents( comp, finalList )
+    -- first container is number of ways to build the items (e.g., Power Treads has 3)
+    local comps = {}
+    if #variants == 0 then
+        table.insert(comps, sItemName)
+    elseif #variants == 1 then
+        comps = variants[1]
+    else
+        dbg.pause("[ITEM BREAKDOWN INTO COMPONENTS ERROR]: WE DO NOT HANDLE VARIANT BUILDUPS YET. ", #variants)
+        comps = variants[1]
+    end
+    
+    local finalComps = {}
+    self:FlattenComponents(finalComps, comps)    
+    return finalComps
+end
+
+function InventoryHelper:FlattenComponents(output, input)
+    local input_map  -- has the same structure as input, but stores the
+                     -- indices to the corresponding output
+  
+    --print("Input Size: ", #input)
+    for indx = 1, #input do
+        --print("Input: ", input[indx])
+        local components = GetItemComponents(input[indx])
+        if #components > 0 then
+            --print("Recursive...")
+            for i = 1, #components do
+                input_map = {}
+                -- forward DFS order
+                input_map[#input_map+1] = self:FlattenComponents(output, components[i])
+            end
+        else
+            --print("Non-Recursive...")
+            input_map = #output + 1
+            output[input_map] = input[indx]
         end
     end
+    return input_map
 end
---]]
 
 function InventoryHelper:HealthConsumables( hHero )
     local health = 0

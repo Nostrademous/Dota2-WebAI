@@ -4,6 +4,7 @@
 -------------------------------------------------------------------------------
 
 local dt = require( GetScriptDirectory().."/decision" )
+local inv = require( GetScriptDirectory().."/helper/inventory_helper" )
 
 local botAM = dt:new()
 

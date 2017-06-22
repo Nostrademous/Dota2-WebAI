@@ -55,7 +55,11 @@ class World(object):
             self.generateWorldUpdateReply(data['Time'])
         # E -- Enemies Update Packet
         elif dataType == 'E':
+            self.updateEnemyHeroes(data['Data'])
             self.generateEnemiesReply(data['Time'])
+        # A -- Allies Update Packet (for Human and not-our-bot Bots)
+        elif dataType == 'A':
+            self.generateAlliesReply(data['Time'])
         # P* -- Player Update Packet
         elif dataType[0] == 'P':
             cHero = self.updateHero(data['Data'], int(dataType[1:]))
@@ -80,6 +84,11 @@ class World(object):
         self.reply["Type"] = 'E'
         self.reply["Time"] = time
         
+    def generateAlliesReply(self, time):
+        self.reply = {}
+        self.reply["Type"] = 'A'
+        self.reply["Time"] = time
+
     def generatePlayerUpdateReply(self, time, pID, reply):
         self.reply = {}
         self.reply["Type"] = pID
@@ -93,15 +102,14 @@ class World(object):
         for entry in data:
             print(entry, ' ', data[entry])
 
-    def updateEnemyHeroes(self, heroData):
+    def updateEnemyHeroes(self, data):
         print('Enemies:\n')
-        for hero in heroData:
-            cHero = Hero(hero, heroData[hero]['ID'], heroData[hero]['Team'], heroData[hero])
-            print(cHero)
+        for hero in data:
+            print(hero, ' ', data[hero])
         
     def updateHero(self, heroData, pID):
         cHero = Hero(heroData['Name'], pID, heroData['Team'], heroData)
-        print(cHero)
+        #print(cHero)
         return cHero
     
     def updateOtherEnemyUnits(self, data):

@@ -33,6 +33,8 @@ class Hero(Unit):
         self.level          = jsonData['Level']
         self.gold           = jsonData['Gold']
         self.ability_pts    = jsonData['AP']
+        self.next_abilities = jsonData['NextAbs']
+        self.next_items     = jsonData['NextItems']
         
         self.items          = []
         for item in jsonData['Items']:
