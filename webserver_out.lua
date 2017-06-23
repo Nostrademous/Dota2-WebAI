@@ -503,10 +503,13 @@ function webserver.SendData(hBot)
         end
         
         -- check if we need to send a Player Update Packet
-        local id = packet.TYPE_PLAYER .. tostring(hBot:GetPlayerID())
-        if packet.LastPacket[id] == nil or packet.LastPacket[id].processed then
+        local sPID = tostring(hBot:GetPlayerID())
+        local id = packet.TYPE_PLAYER .. sPID
+        if packet.LastPacket[id] == nil or packet.LastPacket[id].processed 
+            or (webserver["lastPlayerUpdate"..sPID] and (GameTime() - webserver["lastPlayerUpdate"..sPID]) > 0.25) then
             local jsonData = webserver.CreatePlayerUpdate(hBot)
             packet:CreatePacket(id, jsonData)
+            webserver["lastPlayerUpdate"..sPID] = GameTime()
             dbg.myPrint("Sending Player Update: ", tostring(jsonData))
             webserver.SendPacket(jsonData)
         end

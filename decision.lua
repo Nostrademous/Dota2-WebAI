@@ -255,18 +255,17 @@ function X:Atomic_BuyItems(hBot)
     
     local sComps = {}
     
-    dbg.pause("")
-    
     for i = 1, #hBot.mybot.sNextItem do
-        --dbg.myPrint(hBot.mybot.sNextItem[1])
-        TableConcat(sComps, InvHelp:GetComponents(item_map[hBot.mybot.sNextItem[1]]))
-        --dbg.myPrint('Maps to: ', sNextItem)
+        TableConcat(sComps, InvHelp:GetComponents(item_map[hBot.mybot.sNextItem[i]]))
     end
     
     hBot.mybot.sNextItem = sComps
+    for k,v in pairs(sComps) do
+        print(k,v)
+    end
     
-    for j = 1, #sComps do
-        local sNextItem = sComps[j]
+    while #hBot.mybot.sNextItem > 0 do
+        local sNextItem = hBot.mybot.sNextItem[1]
     
         if hBot:GetGold() >= GetItemCost(sNextItem) then
             local secret = IsItemPurchasedFromSecretShop(sNextItem)
@@ -295,6 +294,8 @@ function X:Atomic_BuyItems(hBot)
                     break
                 end
             end
+        else
+            break
         end
     end
 end
