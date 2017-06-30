@@ -36,6 +36,8 @@ function PosInTable(tab, val)
     return -1
 end
 
+--- USED BY: 
+---     InventoryHelper:BuyItem()
 function GetTableKeyNameFromID( hTable, iIndex )
 	if hTable == nil or iIndex == nil then
 		return "nil"
@@ -50,6 +52,8 @@ function GetTableKeyNameFromID( hTable, iIndex )
 	return nil
 end
 
+--- USED BY: 
+---     decision.lua - Atomic_BuyItems()
 function TableConcat(t1, t2)
     for i = 1, #t2 do
         t1[#t1+1] = t2[i]

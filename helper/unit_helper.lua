@@ -3,6 +3,11 @@
 --- GITHUB REPO: https://github.com/Nostrademous/Dota2-WebAI
 -------------------------------------------------------------------------------
 
+--- IMPORTS
+-------------------------------------------------
+
+-------------------------------------------------
+
 local UnitHelper = {}
 
 -- this can be used for unit reaching another unit or projectile reaching a unit
@@ -46,6 +51,31 @@ function UnitHelper:UnitHasBreakableBuff( hUnit )
         return true
     end
     return false
+end
+
+function UnitHelper:DistanceFromNearestShop( hUnit )
+    local vecShops = {
+        GetShopLocation(TEAM_RADIANT, SHOP_HOME),
+        GetShopLocation(TEAM_DIRE, SHOP_HOME),
+        GetShopLocation(TEAM_NONE, SHOP_SECRET),
+        GetShopLocation(TEAM_NONE, SHOP_SECRET_2),
+        GetShopLocation(TEAM_NONE, SHOP_SIDE),
+        GetShopLocation(TEAM_NONE, SHOP_SIDE_2)
+    }
+
+    local dist = VERY_HIGH_INT
+    for _, vecShop in pairs(vecShops) do
+        local thisDist = GetUnitToLocationDistance(hUnit, vecShop)
+        if thisDist < SHOP_USE_DISTANCE then
+            return thisDist
+        end
+
+        if thisDist < dist then
+            dist = thisDist
+        end
+    end
+
+    return dist
 end
 
 return UnitHelper

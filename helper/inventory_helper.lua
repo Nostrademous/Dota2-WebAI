@@ -3,24 +3,31 @@
 --- GITHUB REPO: https://github.com/Nostrademous/Dota2-WebAI
 -------------------------------------------------------------------------------
 
+--- IMPORTS
+-------------------------------------------------
+
+local UnitHelper = require( GetScriptDirectory().."/helper/unit_helper" )
+
+-------------------------------------------------
+
 local InventoryHelper = {}
 
-function InventoryHelper:Contains(hUnit, item, hasToBeActiveSlot)
+function InventoryHelper:HasItem(hUnit, sItemName, hasToBeActiveSlot)
     local slots = (hasToBeActiveSlot and 5 or 8)
     for i = 0, slots do
         local slot = hUnit:GetItemInSlot(i)
-        if (slot and slot:GetName() == item) then
+        if (slot and slot:GetName() == sItemName) then
             return true
         end
     end
     return false
 end
 
-function InventoryHelper:GetItemByName(hUnit, item_name, hasToBeActiveSlot)
+function InventoryHelper:GetItemByName(hUnit, sItemName, hasToBeActiveSlot)
     local slots = (hasToBeActiveSlot and 5 or 8)
     for i = 0, slots do
         local slot = hUnit:GetItemInSlot(i)
-        if (slot and slot:GetName() == item_name) then
+        if (slot and slot:GetName() == sItemName) then
             return slot
         end
     end
@@ -103,6 +110,7 @@ function InventoryHelper:LeastValuableItemSlot(hUnit, slot_from, slot_to)
 end
 
 function InventoryHelper:Value(sItemName)
+    --- NOTE: Blink Dagger - we "almost always" won't in main inventory
     if sItemName == "item_blink" then return 5000 end
 
     return GetItemCost(sItemName)
@@ -118,6 +126,18 @@ function InventoryHelper:BuyItem( hUnit, sItemName )
         return 1
     end
     return 0
+end
+
+--- NOTE: This will only sell items we have in main inventory or backpack
+---       If we need ability to sell items in stash we will need to revise this function
+function InventoryHelper:SellItem( hUnit, sItemName )
+    if UnitHelper:DistanceFromNearestShop(hUnit) < SHOP_USE_DISTANCE then
+        if self:HasItem(hUnit, sItemName, false) then
+            hUnit:ActionImmediate_SellItem(sItemName)
+        else
+            dbg.pause("[ITEM SELL ERROR] Hero: ", hUnit:GetUnitName(), ", Item: ", sItemName)
+        end
+    end
 end
 
 function InventoryHelper:GetComponents( sItemName )
