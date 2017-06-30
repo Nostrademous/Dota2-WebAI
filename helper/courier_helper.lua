@@ -42,6 +42,18 @@ function CourierHelper:CourierAction( hHero, nCourierIndex, nAction )
     end
 end
 
+function CourierHelper:NumEmpyInventorySlots( nCourierIndex )
+    local hCourier = GetCourier(nCourierIndex)
+    local nEmptySlots = 0
+    for i = 0, 8 do -- 6 inv slots, 3 backpack slots
+        local hItem = hCourier:GetItemInSlot(i)
+        if hItem == nil then
+            nEmptySlots = nEmptySlots + 1
+        end
+    end
+    return nEmptySlots
+end
+
 --- THESE LEVERAGE THE ActionImmediate_Courier() API
 function CourierHelper:UseSpeedBurst( hHero, nCourierIndex )
     local hCourier = GetCourier(nCourierIndex)
