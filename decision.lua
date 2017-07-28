@@ -37,11 +37,11 @@ local X = { init = false, currentMode = noneMode, currentModeValue = BOT_MODE_DE
 
 function X:new(myBotInfo)
     local mybot = {}
-    setmetatable(o, self)
+    setmetatable(mybot, self)
     self.__index = self
     mybot.botInfo = myBotInfo
     
-    
+    -- TODO - other stats we want to track?
     
     GetBot().mybot = mybot              -- make mybot accessible anywhere after calling GetBot()
     GetBot().botInfo = mybot.botInfo    -- make botInfo accessible

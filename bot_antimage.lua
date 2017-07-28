@@ -5,8 +5,9 @@
 
 local dt = require( GetScriptDirectory().."/decision" )
 local inv = require( GetScriptDirectory().."/helper/inventory_helper" )
+local heroes = require(GetScriptDirectory().."/heroes/_heroes")
 
-local botAM = dt:new()
+local botAM = dt:new(heroes:GetHero())
 
 function botAM:new(o)
     o = o or dt:new(o)
