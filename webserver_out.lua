@@ -439,8 +439,11 @@ local function dumpCastCallback()
     return str
 end
 
+IP_ADDR = "127.0.0.1"
+IP_PORT = 2222
+
 function webserver.SendPacket( json )
-    local req = CreateHTTPRequest( ":2222" )
+    local req = CreateHTTPRequest( IP_ADDR .. ":" IP_PORT )
     req:SetHTTPRequestRawPostBody("application/json", json)
     req:Send( function( result )
         for k,v in pairs( result ) do

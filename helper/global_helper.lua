@@ -133,4 +133,36 @@ function Hardlane()
     return ((GetTeam() == TEAM_RADIANT) and LANE_TOP or LANE_BOT)
 end
 
+function MyGetNearbyHeroes(range, bEnemies)
+    if range <= 1600 then
+        return GetBot():GetNearbyHeroes(1599, bEnemies, BOT_MODE_NONE)
+    else
+        local botInfo = GetBot().mybot.botInfo
+        local result_heroes = {}
+        local heroes = (bEnemies and botInfo.enemy_heroes or botInfo.ally_heroes)
+        for i = 1, #heroes do
+            if (GetUnitToUnitDistance(bot, heroes[i]) < range) then
+                table.insert(result_heroes, heroes[i])
+            end
+        end
+        return result_heroes
+    end
+end
+
+function MyGetNearbyCreeps(range, bEnemy)
+    if range <= 1600 then
+        return GetBot():GetNearbyCreeps(range, bEnemy)
+    else
+        local botInfo = GetBot().mybot.botInfo
+        local result_creeps = {}
+        local creeps = (bEnemy and botInfo.enemy_creeps or botInfo.ally_creeps)
+        for i = 1, #creeps do
+            if (GetUnitToUnitDistance(bot, creeps[i]) < range) then
+                table.insert(result_creeps, creeps[i])
+            end
+        end
+        return result_creeps
+    end
+end
+
 

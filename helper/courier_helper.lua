@@ -113,4 +113,11 @@ function CourierHelper:MoveToBotSideShop( nCourierIndex, iType )
     self:MoveCourierToLoc(nCourierIndex, GetShopLocation(TEAM_NONE, SHOP_SIDE_2), iType)
 end
 
+function CourierHelper:DeathCallback( hTable )
+    dbg.myPrint("Courier killed: ", hTable.unit, ", Team: ", hTable.team)
+    dbg.pause("Courier DeathCallback Called")
+end
+
+InstallCourierDeathCallback( CourierHelper:DeathCallback )
+
 return CourierHelper
