@@ -21,12 +21,12 @@ def writeHeroDataLua(obj):
             try:
                 st = st + 'X.%s.%s = "%s"\n' % (heroName, 'Type', heroes[heroName]['Type'])
             except KeyError as e:
-                print 'Error dumping [Type]: ', heroName
+                print('Error dumping [Type]: ', heroName)
 
             try:
                 st = st + 'X.%s.%s = "%s"\n' % (heroName, 'Name', heroes[heroName]['Name'])
             except KeyError as e:
-                print 'Error dumping [Name]: ', heroName
+                print('Error dumping [Name]: ', heroName)
 
             indx = 0
             for ability in heroes[heroName]['Abilities']:
@@ -45,18 +45,18 @@ def writeHeroDataLua(obj):
                 for i in range(0, len(roles)):
                     st = st + 'X.%s.Role.%s = %s\n' % (heroName, roles[i], rolevals[i])
             except KeyError as e:
-                print 'Error dumping [Role]: ', heroName
+                print('Error dumping [Role]: ', heroName)
 
             try:
                 st = st + 'X.%s.LaneInfo = {}\n' % (heroName)
                 for key in heroes[heroName]['LaneInfo']:
                     st = st + 'X.%s.LaneInfo.%s = %s\n' % (heroName, key, heroes[heroName]['LaneInfo'][key])
             except KeyError as e:
-                print 'Error dumping [LaneInfo]: ', heroName
+                print('Error dumping [LaneInfo]: ', heroName)
 
             f.write(st)
         except KeyError as e:
-            print 'Generic Error: ', heroName
+            print('Generic Error: ', heroName)
 
     f.write('\nreturn X\n')
     f.close()
@@ -68,13 +68,13 @@ if __name__ == "__main__":
 
     content = fName.readlines()
     content = [x.strip() for x in content]
-    print len(content)
+    print(len(content))
 
     fName.close()
 
     for line in content:
         lineCount += 1
-        name = string.find(line, "npc_dota_hero_")
+        name = line.find("npc_dota_hero_")
         
         if name > -1 and heroName == '' and line.strip('"') not in badHeroNames and shiftCount == 1:
             heroName = line[name+14:-1]
@@ -111,18 +111,19 @@ if __name__ == "__main__":
                     key, val = line.split()
                     heroes[heroName]['Name'] = val.strip('"').replace("_", "-")
                 except ValueError as e:
-                    print 'Error: ', line
+                    print('Error: ', line)
                     break
                 
-            if line[1:8] == 'Ability' and line[1:14] != 'AbilityLayout' and line[1:15] != 'AbilityPreview' and line[1:21] != 'AbilityDraftDisabled':
+            if line[1:8] == 'Ability' and line[1:14] != 'AbilityLayout' and line[1:15] != 'AbilityPreview' and \
+                line[1:21] != 'AbilityDraftDisabled' and line[1:22] != 'AbilityDraftAbilities':
                 try:
                     key, val = line.split()
-                    if string.find(val, "special_bonus_") >= 0:
+                    if val.find("special_bonus_") >= 0:
                         heroes[heroName]['Talents'].append(val.strip('"'))
                     else:
                         heroes[heroName]['Abilities'].append(val.strip('"'))
                 except ValueError as e:
-                    print 'Error: ', line
+                    print('Error: ', line)
                     break
 
             if line == '"Bot"':
@@ -148,9 +149,9 @@ if __name__ == "__main__":
                 key, val = line.split()
                 heroes[heroName]['LaneInfo'][key.strip('"')] = val.strip('"')
             except ValueError as e:
-                print 'Error: ', lineCount, line
+                print('Error: ', lineCount, line)
                 raise e
 
-    print 'Processed %d heroes' % (heroCount)
+    print('Processed %d heroes' % (heroCount))
 
     writeHeroDataLua(heroes)
