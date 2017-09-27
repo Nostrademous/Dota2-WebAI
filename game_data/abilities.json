@@ -706,8 +706,8 @@
       }
     ],
     "mc": [
-      "150",
       "200",
+      "225",
       "250"
     ],
     "cd": "60",
@@ -954,7 +954,12 @@
       "155",
       "170"
     ],
-    "cd": "15",
+    "cd": [
+      "18",
+      "17",
+      "16",
+      "15"
+    ],
     "img": "/apps/dota2/images/abilities/earthshaker_fissure_md.png"
   },
   "earthshaker_enchant_totem": {
@@ -997,9 +1002,9 @@
       }
     ],
     "mc": [
-      "20",
-      "30",
+      "35",
       "40",
+      "45",
       "50"
     ],
     "cd": "5",
@@ -1542,10 +1547,10 @@
     "bkbpierce": "No",
     "desc": "Lina channels the breath of a dragon, sending out a wave of fire that scorches every enemy in its path.",
     "dmg": [
-      "110",
-      "180",
-      "250",
-      "320"
+      "85",
+      "160",
+      "235",
+      "310"
     ],
     "attrib": [
       {
@@ -1733,9 +1738,9 @@
         "key": "duration",
         "header": "STUN DURATION:",
         "value": [
-          "1.1",
-          "1.6",
-          "2.1",
+          "1.4",
+          "1.8",
+          "2.2",
           "2.6"
         ]
       },
@@ -3032,7 +3037,7 @@
       {
         "key": "orb_vision",
         "header": "ORB VISION:",
-        "value": "550",
+        "value": "450",
         "generated": true
       },
       {
@@ -4018,8 +4023,8 @@
     ],
     "mc": "160",
     "cd": [
-      "240",
-      "140",
+      "200",
+      "120",
       "40"
     ],
     "img": "/apps/dota2/images/abilities/skeleton_king_reincarnation_md.png"
@@ -4375,7 +4380,12 @@
       {
         "key": "bolt_stun_duration",
         "header": "DURATION:",
-        "value": "2"
+        "value": [
+          "1.7",
+          "1.8",
+          "1.9",
+          "2"
+        ]
       },
       {
         "key": "bolt_aoe",
@@ -4466,10 +4476,10 @@
     ],
     "mc": "25",
     "cd": [
-      "32",
-      "26",
-      "20",
-      "14"
+      "35",
+      "30",
+      "25",
+      "20"
     ],
     "img": "/apps/dota2/images/abilities/sven_warcry_md.png"
   },
@@ -4853,7 +4863,7 @@
     "behavior": "Passive",
     "dmg_type": "Magical",
     "bkbpierce": "No",
-    "desc": "Sand King's attacks inject a venom that causes enemy units to violently explode when its timer expires, or when the unit dies, damaging and slowing nearby enemies. Deals 50% damage if its timer expires.",
+    "desc": "Sand King's attacks inject a venom that causes enemy units to violently explode when its timer expires, or when the unit dies, damaging and slowing nearby enemies. Deals less damage if its timer expires.",
     "attrib": [
       {
         "key": "caustic_finale_radius",
@@ -4871,20 +4881,14 @@
         ]
       },
       {
-        "key": "caustic_finale_damage_expire_tooltip",
+        "key": "caustic_finale_damage_expire",
         "header": "EXPLODE TIMER DAMAGE:",
         "value": [
-          "45",
-          "65",
-          "85",
+          "20",
+          "50",
+          "80",
           "110"
         ]
-      },
-      {
-        "key": "caustic_finale_damage_reduced",
-        "header": "CAUSTIC FINALE DAMAGE REDUCED:",
-        "value": "50",
-        "generated": true
       },
       {
         "key": "caustic_finale_duration",
@@ -5097,7 +5101,12 @@
         ]
       }
     ],
-    "mc": "120",
+    "mc": [
+      "90",
+      "100",
+      "110",
+      "120"
+    ],
     "cd": "8",
     "img": "/apps/dota2/images/abilities/tiny_toss_md.png"
   },
@@ -5199,7 +5208,7 @@
       {
         "key": "bonus_range_scepter",
         "header": "SCEPTER BONUS RANGE:",
-        "value": "85"
+        "value": "150"
       },
       {
         "key": "cleave_starting_width",
@@ -6230,10 +6239,10 @@
         "key": "stun_duration",
         "header": "SHACKLE DURATION:",
         "value": [
-          "1.5",
-          "2.25",
-          "3",
-          "3.75"
+          "2",
+          "2.6",
+          "3.2",
+          "3.8"
         ]
       },
       {
@@ -6267,7 +6276,12 @@
       "110",
       "120"
     ],
-    "cd": "12",
+    "cd": [
+      "18",
+      "16",
+      "14",
+      "12"
+    ],
     "img": "/apps/dota2/images/abilities/windrunner_shackleshot_md.png"
   },
   "windrunner_powershot": {
@@ -6387,7 +6401,7 @@
         ]
       }
     ],
-    "mc": "75",
+    "mc": "60",
     "cd": "12",
     "img": "/apps/dota2/images/abilities/windrunner_windrun_md.png"
   },
@@ -6526,12 +6540,22 @@
       {
         "key": "slow_movement_speed",
         "header": "ENEMY MOVE SLOW:",
-        "value": "-30%"
+        "value": [
+          "-24%",
+          "-26%",
+          "-28%",
+          "-30%"
+        ]
       },
       {
         "key": "slow_attack_speed",
         "header": "ENEMY ATTACK SLOW:",
-        "value": "-30"
+        "value": [
+          "-24",
+          "-26",
+          "-28",
+          "-30"
+        ]
       }
     ],
     "mc": "50",
@@ -6568,7 +6592,7 @@
     "behavior": "Unit Target",
     "dmg_type": "Magical",
     "bkbpierce": "No",
-    "desc": "Releases an orb of frost that bounces between nearby enemy units up to 10,10,10 times, slowing and damaging each time it hits.  The first target is mini-stunned.\n\nUpgradable by Aghanim's Scepter.",
+    "desc": "Releases an orb of frost that bounces between nearby enemy units up to 10,10,10 times, slowing and damaging each time it hits. \n\nUpgradable by Aghanim's Scepter.",
     "attrib": [
       {
         "key": "damage",
@@ -7806,7 +7830,7 @@
       {
         "key": "bonus_damage",
         "header": "INCREASED MAGIC DAMAGE:",
-        "value": "-20%"
+        "value": "-25%"
       }
     ],
     "mc": "50",
@@ -7872,11 +7896,7 @@
       "340",
       "500"
     ],
-    "cd": [
-      "90",
-      "80",
-      "70"
-    ],
+    "cd": "100",
     "img": "/apps/dota2/images/abilities/necrolyte_reapers_scythe_md.png"
   },
   "warlock_fatal_bonds": {
@@ -10704,7 +10724,7 @@
         "value": "0.7"
       }
     ],
-    "mc": "75",
+    "mc": "100",
     "cd": [
       "32",
       "28",
@@ -11098,8 +11118,8 @@
         "header": "DAMAGE:",
         "value": [
           "100",
-          "130",
-          "160"
+          "140",
+          "180"
         ]
       },
       {
@@ -11132,7 +11152,7 @@
       {
         "key": "vision_range",
         "header": "VISION RANGE:",
-        "value": "750",
+        "value": "500",
         "generated": true
       },
       {
@@ -11737,10 +11757,10 @@
     ],
     "mc": "50",
     "cd": [
+      "13",
       "12",
       "11",
-      "10",
-      "9"
+      "10"
     ],
     "img": "/apps/dota2/images/abilities/dark_seer_surge_md.png"
   },
@@ -12217,12 +12237,7 @@
         ]
       }
     ],
-    "mc": [
-      "125",
-      "140",
-      "155",
-      "170"
-    ],
+    "mc": "125",
     "cd": "45",
     "img": "/apps/dota2/images/abilities/enchantress_natures_attendants_md.png"
   },
@@ -12602,10 +12617,10 @@
     ],
     "mc": "80",
     "cd": [
+      "30",
       "26",
       "22",
-      "18",
-      "14"
+      "18"
     ],
     "img": "/apps/dota2/images/abilities/night_stalker_hunter_in_the_night_md.png"
   },
@@ -12617,7 +12632,7 @@
       {
         "key": "duration",
         "header": "DURATION:",
-        "value": "50"
+        "value": "40"
       },
       {
         "key": "blind_percentage",
@@ -13725,7 +13740,7 @@
         "generated": true
       }
     ],
-    "mc": "100",
+    "mc": "125",
     "cd": "40",
     "img": "/apps/dota2/images/abilities/batrider_firefly_md.png"
   },
@@ -13775,8 +13790,8 @@
     ],
     "mc": "225",
     "cd": [
-      "90",
-      "75",
+      "100",
+      "80",
       "60"
     ],
     "img": "/apps/dota2/images/abilities/batrider_flaming_lasso_md.png"
@@ -13924,9 +13939,9 @@
         "key": "heal_amount",
         "header": "HEAL:",
         "value": [
-          "225",
-          "325",
-          "425"
+          "250",
+          "375",
+          "500"
         ]
       },
       {
@@ -14110,13 +14125,13 @@
       {
         "key": "illusion_damage_outgoing",
         "header": "ILLUSION DAMAGE OUTGOING:",
-        "value": "-70",
+        "value": "-60",
         "generated": true
       },
       {
         "key": "tooltip_outgoing",
         "header": "HAUNT DAMAGE:",
-        "value": "30%"
+        "value": "40%"
       },
       {
         "key": "illusion_damage_incoming",
@@ -14612,11 +14627,7 @@
         "value": "17"
       }
     ],
-    "mc": [
-      "100",
-      "125",
-      "150"
-    ],
+    "mc": "150",
     "cd": "40",
     "img": "/apps/dota2/images/abilities/ancient_apparition_ice_blast_md.png"
   },
@@ -15488,7 +15499,7 @@
   "alchemist_goblins_greed": {
     "dname": "Greevil's Greed",
     "behavior": "Passive",
-    "desc": "Alchemist synthesizes additional gold from his enemies and bounty runes. With each kill, Alchemist earns base bonus gold and extra bonus gold. If Alchemist kills another unit which yields gold within the next 30 seconds, an additional instance of Extra Bonus Gold is added to the total. Additionally, causes bounty runes to yield 2 times their normal gold.",
+    "desc": "Alchemist synthesizes additional gold from his enemies and bounty runes. With each kill, Alchemist earns base bonus gold and extra bonus gold. If Alchemist kills another unit which yields gold within the next 30 seconds, an additional instance of Extra Bonus Gold is added to the total. Additionally, causes bounty runes to yield 2.5 times their normal gold.",
     "attrib": [
       {
         "key": "duration",
@@ -15518,7 +15529,7 @@
       {
         "key": "bounty_multiplier_tooltip",
         "header": "BOUNTY RUNE MULTIPLIER:",
-        "value": "2"
+        "value": "2.5"
       }
     ],
     "img": "/apps/dota2/images/abilities/alchemist_goblins_greed_md.png"
@@ -17071,10 +17082,10 @@
     ],
     "mc": "40",
     "cd": [
+      "60",
       "55",
       "50",
-      "45",
-      "40"
+      "45"
     ],
     "img": "/apps/dota2/images/abilities/lycan_howl_md.png"
   },
@@ -18127,7 +18138,7 @@
       }
     ],
     "mc": "200",
-    "cd": "50",
+    "cd": "40",
     "img": "/apps/dota2/images/abilities/shadow_demon_demonic_purge_md.png"
   },
   "chaos_knight_chaos_bolt": {
@@ -19120,10 +19131,10 @@
         "key": "tombstone_health",
         "header": "TOMBSTONE HEALTH:",
         "value": [
-          "6",
           "8",
           "10",
-          "14"
+          "12",
+          "16"
         ],
         "generated": true
       },
@@ -19131,10 +19142,10 @@
         "key": "hits_to_destroy_tooltip",
         "header": "ATTACKS TO DESTROY:",
         "value": [
-          "3",
           "4",
           "5",
-          "7"
+          "6",
+          "8"
         ]
       },
       {
@@ -19910,7 +19921,7 @@
         "generated": true
       },
       {
-        "key": "damage_reflect_pct_tooltip",
+        "key": "damage_reflect_pct",
         "header": "DAMAGE REFLECTED:",
         "value": "100%"
       }
@@ -20743,7 +20754,7 @@
         "value": "64"
       }
     ],
-    "mc": "100",
+    "mc": "90",
     "cd": [
       "16",
       "14",
@@ -21138,12 +21149,7 @@
         "value": "19"
       }
     ],
-    "mc": [
-      "120",
-      "130",
-      "140",
-      "150"
-    ],
+    "mc": "150",
     "cd": [
       "20",
       "18",
@@ -23493,8 +23499,8 @@
       }
     ],
     "mc": [
-      "350",
-      "575",
+      "300",
+      "550",
       "800"
     ],
     "cd": [
@@ -24713,7 +24719,7 @@
     ],
     "dmg_type": "Magical",
     "bkbpierce": "No",
-    "desc": "Earth Spirit pulls the target Stone Remnant. Enemies struck by the gripped target will be silenced, and take damage if the gripped target is a Stone Remnant.\n\nUpgradable by Aghanim's Scepter.",
+    "desc": "Earth Spirit pulls the target Stone Remnant. Enemies struck by the gripped target will be silenced, and take damage if the gripped target is a Stone Remnant.",
     "attrib": [
       {
         "key": "radius",
@@ -24993,7 +24999,7 @@
     ],
     "dmg_type": "Magical",
     "bkbpierce": "No",
-    "desc": "A deadly pit is conjured at the target location; any unit that enters will be rooted for 0.9,1.2,1.5,1.8 seconds. Each enemy unit within the pit are affected every 3.6 seconds.",
+    "desc": "A deadly pit is conjured at the target location; any unit that enters will be rooted. Each enemy unit within the pit are affected every 3.6 seconds.",
     "attrib": [
       {
         "key": "radius",
@@ -26010,7 +26016,7 @@
       }
     ],
     "mc": "100",
-    "cd": "25",
+    "cd": "22",
     "img": "/apps/dota2/images/abilities/monkey_king_boundless_strike_md.png"
   },
   "monkey_king_mischief": {
@@ -26123,10 +26129,10 @@
         "key": "impact_damage_tooltip",
         "header": "PRIMAL SPRING DAMAGE:",
         "value": [
-          "100",
-          "180",
-          "260",
-          "340"
+          "140",
+          "210",
+          "280",
+          "350"
         ]
       },
       {
@@ -26269,7 +26275,7 @@
       {
         "key": "attack_speed",
         "header": "SOLDIER ATK SPEED:",
-        "value": "1.6"
+        "value": "1.4"
       },
       {
         "key": "duration",
@@ -30405,9 +30411,9 @@
         "key": "move_slow",
         "header": "MOVEMENT SLOW:",
         "value": [
-          "19%",
-          "26%",
-          "33%",
+          "22%",
+          "28%",
+          "34%",
           "40%"
         ]
       },
@@ -30538,7 +30544,7 @@
       {
         "key": "heal_additive",
         "header": "BASE HEALTH REGEN:",
-        "value": "20"
+        "value": "25"
       },
       {
         "key": "heal_percentage",
@@ -30955,6 +30961,9 @@
   "special_bonus_attack_speed_100": {
     "dname": "+100 Attack Speed"
   },
+  "special_bonus_attack_speed_140": {
+    "dname": "+140 Attack Speed"
+  },
   "special_bonus_hp_regen_4": {
     "dname": "+4 Health Regen"
   },
@@ -31158,6 +31167,9 @@
   },
   "special_bonus_spell_lifesteal_30": {
     "dname": "30% Spell Lifesteal"
+  },
+  "special_bonus_spell_lifesteal_60": {
+    "dname": "60% Spell Lifesteal"
   },
   "special_bonus_spell_lifesteal_70": {
     "dname": "70% Spell Lifesteal"
@@ -31820,7 +31832,7 @@
     "dname": "+75 Thunder Clap Damage"
   },
   "special_bonus_unique_brewmaster_3": {
-    "dname": "+2s Thunderlap Slow"
+    "dname": "+2s Thunder Clap Slow"
   },
   "special_bonus_unique_bristleback": {
     "dname": "+4 Max Goo Stacks"
@@ -31946,7 +31958,7 @@
     "dname": "-8s Crippling Fear Cooldown"
   },
   "special_bonus_unique_nyx": {
-    "dname": "200% Spiked Carapace Damage"
+    "dname": "+100% Spiked Carapace Damage"
   },
   "special_bonus_unique_nyx_2": {
     "dname": "+50 Impale Damage"
@@ -32058,7 +32070,10 @@
     "dname": "+3 Mana Drain Multi Target"
   },
   "special_bonus_unique_lion_2": {
-    "dname": "+80 Earth Spike Damage "
+    "dname": "+80 Earth Spike Damage"
+  },
+  "special_bonus_unique_lion_3": {
+    "dname": "+300 Finger of Death Damage"
   },
   "special_bonus_unique_skywrath": {
     "dname": "-4s Ancient Seal Cooldown"
@@ -32169,7 +32184,7 @@
     "dname": "-4s Dragon Slave Cooldown"
   },
   "special_bonus_unique_lina_2": {
-    "dname": "+40/4% Fiery Soul Per Stack"
+    "dname": "+35/3% Fiery Soul Per Stack"
   },
   "special_bonus_unique_lina_3": {
     "dname": "+80 Light Strike Array Damage"
@@ -32232,7 +32247,7 @@
     "dname": "+50% Life Drain Heal"
   },
   "special_bonus_unique_pugna_2": {
-    "dname": "+150 Nether Blast Damage"
+    "dname": "+200 Nether Blast Damage"
   },
   "special_bonus_unique_pugna_3": {
     "dname": "+0.75 Netherward Damage Per Mana"
@@ -32265,7 +32280,7 @@
     "dname": "+60 Spawn Spiderling Damage"
   },
   "special_bonus_unique_broodmother_4": {
-    "dname": "+12 Spiders Attack Damage"
+    "dname": "+14 Spiders Attack Damage"
   },
   "special_bonus_unique_chen_1": {
     "dname": "+2 Holy Persuasion Max Count"

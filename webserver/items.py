@@ -2,7 +2,7 @@ import requests
 from lxml import etree, html
 import traceback
 import time
-
+from  web_dota_mapper import WebMapper
 #If Selenium/Chrome
 #from selenium import webdriver
 #from selenium.webdriver.common.by import By
@@ -14,6 +14,7 @@ class ItemKB():
 
         self.headers.update({'User-Agent': 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/54.0.2840.59 Safari/537.36'})  #Need a user agent or they 429 you
         #self.driver = webdriver.Chrome() #If using selenium/chrome #If Selenium/Chrome
+        self.mapper = WebMapper()
         pass
 
     def getStartingItems(self,heroName,desiredLane):
@@ -25,6 +26,7 @@ class ItemKB():
             #Get Stats for all players on page
             statBlocks = hdoc.xpath('//div[@class="r-stats-grid"]')
 
+            #We get only the first stat block that matches our name and lane
             for statBlock in statBlocks:
 
                 #Get lane
@@ -38,6 +40,9 @@ class ItemKB():
                 #starting items are in first itemset slot
                 startingItems = [ href.split('/')[-1] for href in itemSets[0].xpath('.//a/@href')]
 
+                #convert to internal game names
+                startingItems = [ self.mapper.item_name(name) for name in startingItems]
+
                 return startingItems
 
             return None
@@ -46,7 +51,8 @@ class ItemKB():
 
 
     #If Selenium/Chrome
-    #A Solutoin that works using selenium/Chrome.  Requires lots of setup and latency but unbeatable by scraping detection
+    #A Solutoin that works using selenium/Chrome.  Requires lots of setup and latency but helps abate scraping detection
+    #THIS IS OUTDATED, BUT LEFT AS A REMINDER
     def __chrome_getStartingItems(self,heroName):
         try:
             self.driver.get("https://www.dotabuff.com/heroes/"+heroName+"/guides")
@@ -54,6 +60,11 @@ class ItemKB():
             playerStats = self.driver.find_elements(By.XPATH,'//div[@class="r-stats-grid"]')
             itemSets = playerStats[0].find_elements(By.XPATH,'.//div[@class="kv r-none-mobile"]')
             startingItems = [ element.get_attribute('href').split('/')[-1].replace('-','_') for element in itemSets[0].find_elements(By.XPATH,'.//a')]
+
+            #convert to internal game names
+            startingItems = [ mapper.item_name(name) for name in startingItems]
+
+            return startingItems
         except:
             print("Exception Occured:{}".format(traceback.format_exc()))
         finally:
