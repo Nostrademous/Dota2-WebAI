@@ -35,11 +35,18 @@ noneMode = dofile( GetScriptDirectory().."/modes/none" )
 
 local X = { init = false, currentMode = noneMode, currentModeValue = BOT_MODE_DESIRE_NONE, prevMode = noneMode  }
 
-function X:new(o)
-    o = o or {}
-    setmetatable(o, self)
+function X:new(myBotInfo)
+    local mybot = {}
+    setmetatable(mybot, self)
     self.__index = self
-    return o
+    mybot.botInfo = myBotInfo
+    
+    -- TODO - other stats we want to track?
+    
+    GetBot().mybot = mybot              -- make mybot accessible anywhere after calling GetBot()
+    GetBot().botInfo = mybot.botInfo    -- make botInfo accessible
+    
+    return mybot
 end
 
 function X:getCurrentMode()

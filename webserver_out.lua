@@ -7,6 +7,7 @@ dkjson = require( "game/dkjson" )
 
 local dbg = require( GetScriptDirectory().."/debug" )
 local packet = require( GetScriptDirectory().."/data_packet" )
+local web_config = require( GetScriptDirectory().."/web_config" )
 
 local webserver = {}
 
@@ -439,8 +440,8 @@ local function dumpCastCallback()
     return str
 end
 
-function webserver.SendPacket( json )
-    local req = CreateHTTPRequest( ":2222" )
+function webserver.SendPacket( json )    
+    local req = CreateHTTPRequest( web_config.IP_ADDR .. ":" .. web_config.IP_PORT )
     req:SetHTTPRequestRawPostBody("application/json", json)
     req:Send( function( result )
         for k,v in pairs( result ) do

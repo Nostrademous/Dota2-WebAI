@@ -91,4 +91,8 @@ function X.draw()
     end
 end
 
+function X.DebugStats()
+    DebugDrawText(25, 50, "LH/D = "..GetBot():GetLastHits().."/"..GetBot():GetDenies(), 255, 255, 255);
+end
+
 return X
