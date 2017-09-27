@@ -1088,7 +1088,7 @@
         "level": 3
       },
       {
-        "name": "special_bonus_spell_amplify_8",
+        "name": "special_bonus_unique_lion_3",
         "level": 3
       },
       {
@@ -1601,7 +1601,7 @@
         "level": 4
       },
       {
-        "name": "special_bonus_spell_lifesteal_70",
+        "name": "special_bonus_spell_lifesteal_60",
         "level": 4
       }
     ]
@@ -1707,7 +1707,7 @@
         "level": 1
       },
       {
-        "name": "special_bonus_movement_speed_15",
+        "name": "special_bonus_movement_speed_30",
         "level": 2
       },
       {
@@ -1956,7 +1956,7 @@
         "level": 1
       },
       {
-        "name": "special_bonus_movement_speed_15",
+        "name": "special_bonus_movement_speed_20",
         "level": 1
       },
       {
@@ -1972,7 +1972,7 @@
         "level": 3
       },
       {
-        "name": "special_bonus_magic_resistance_10",
+        "name": "special_bonus_magic_resistance_15",
         "level": 3
       },
       {
@@ -2132,7 +2132,7 @@
         "level": 2
       },
       {
-        "name": "special_bonus_magic_resistance_10",
+        "name": "special_bonus_magic_resistance_15",
         "level": 2
       },
       {
@@ -2729,7 +2729,7 @@
         "level": 2
       },
       {
-        "name": "special_bonus_gold_income_15",
+        "name": "special_bonus_gold_income_20",
         "level": 3
       },
       {
@@ -2768,7 +2768,7 @@
         "level": 2
       },
       {
-        "name": "special_bonus_movement_speed_20",
+        "name": "special_bonus_movement_speed_25",
         "level": 2
       },
       {
@@ -3255,7 +3255,7 @@
     ],
     "talents": [
       {
-        "name": "special_bonus_attack_speed_30",
+        "name": "special_bonus_attack_damage_30",
         "level": 1
       },
       {
@@ -3279,7 +3279,7 @@
         "level": 3
       },
       {
-        "name": "special_bonus_attack_damage_120",
+        "name": "special_bonus_attack_speed_140",
         "level": 4
       },
       {
@@ -3306,11 +3306,11 @@
         "level": 1
       },
       {
-        "name": "special_bonus_cast_range_75",
+        "name": "special_bonus_cast_range_100",
         "level": 2
       },
       {
-        "name": "special_bonus_spell_amplify_8",
+        "name": "special_bonus_spell_amplify_10",
         "level": 2
       },
       {
@@ -3524,15 +3524,15 @@
         "level": 2
       },
       {
-        "name": "special_bonus_magic_resistance_8",
+        "name": "special_bonus_magic_resistance_12",
         "level": 2
       },
       {
-        "name": "special_bonus_hp_250",
+        "name": "special_bonus_hp_350",
         "level": 3
       },
       {
-        "name": "special_bonus_movement_speed_25",
+        "name": "special_bonus_movement_speed_30",
         "level": 3
       },
       {
@@ -4260,7 +4260,7 @@
         "level": 1
       },
       {
-        "name": "special_bonus_spell_lifesteal_10",
+        "name": "special_bonus_spell_lifesteal_15",
         "level": 2
       },
       {
@@ -4558,7 +4558,7 @@
         "level": 1
       },
       {
-        "name": "special_bonus_hp_175",
+        "name": "special_bonus_hp_200",
         "level": 1
       },
       {
@@ -4690,11 +4690,11 @@
         "level": 1
       },
       {
-        "name": "special_bonus_movement_speed_20",
+        "name": "special_bonus_movement_speed_35",
         "level": 2
       },
       {
-        "name": "special_bonus_attack_damage_50",
+        "name": "special_bonus_attack_damage_75",
         "level": 2
       },
       {
